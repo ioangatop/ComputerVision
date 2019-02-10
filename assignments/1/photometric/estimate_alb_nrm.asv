@@ -43,13 +43,15 @@ for i = 1:h
             scriptI = diag(iVector);
             A = scriptI * scriptV;
             B = scriptI * iVector;
-            g = linsolve(A, B);
+            g = mldivide(B, A);
         else
             g = mldivide(iVector, scriptV);
         end
 
         %fprintf('Size A = %d %d.\n\n', size(A));
         %fprintf('Size B = %d %d.\n\n', size(B));
+
+        g = linsolve(B, A);
         
         %fprintf('Size g = %d %d.\n\n', size(g));
         %fprintf('g = %d %d %d.\n\n', g);
