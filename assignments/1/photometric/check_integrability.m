@@ -20,31 +20,22 @@ q = normals(:, :, 2) ./ normals(:, :, 3);
 
 % ========================================================================
 
-
-
+% Fill nans with 0
 p(isnan(p)) = 0;
 q(isnan(q)) = 0;
 
-fprintf('Size p = %d %d.\n\n', size(p));
-fprintf('Size q = %d %d.\n\n', size(q));
-
 % ========================================================================
 % YOUR CODE GOES HERE
-% approximate second derivate by neighbor difference
+% approximate second derivative by neighbor difference
 % and compute the Squared Errors SE of the 2 second derivatives SE
-h = 0.001
+
+% Second derivatives
 p2 = gradient(p);
 q2 = gradient(q);
 
-fprintf('Size p2 = %d %d.\n\n', size(p2));
-fprintf('Size q2 = %d %d.\n\n', size(q2));
+% Compute Squared Errors
 SE = (p2 - q2).^2;
-fprintf('Size SE = %d %d.\n\n', size(SE));
 
 % ========================================================================
-
-
-
-
 end
 

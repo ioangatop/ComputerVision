@@ -26,16 +26,15 @@ switch path_type
             height_map(x,1) = height_map(x-1, 1) + q(x, 1);
         end
         
+        % for each row
+        %   for each element of the row except for leftmost
+        %       height_value = previous_height_value + corresponding_p_value
+       
         for x = 1:h
             for y = 2:w
                 height_map(x,y) = height_map(x, y-1) + p(x,y);
             end
         end
-        
-        % for each row
-        %   for each element of the row except for leftmost
-        %       height_value = previous_height_value + corresponding_p_value
-        
 
        
         % =================================================================

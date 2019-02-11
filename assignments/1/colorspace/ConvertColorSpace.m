@@ -23,8 +23,10 @@ elseif strcmp(colorspace, 'rgb')
     new_image = rgb2normedrgb(input_image); % fill in this function
 elseif strcmp(colorspace, 'hsv')   
     % use the built-in function
+    new_image = rgb2hsv(input_image);
 elseif strcmp(colorspace, 'ycbcr')
-    % use the built-in function
+    % use the built-in function 
+    new_image = rgb2ycbcr(input_image);
 elseif strcmp(colorspace, 'gray')
     new_image = rgb2grays(input_image); % fill in this function
 else
@@ -34,6 +36,11 @@ else
     return;
 end
 
+% The function 'visualize' has been moved insides the ifs statements
+% because problem raises from the 'gray' parts, where we compute and
+% plot 4 different images
+
+% Initial position of 'visualize' function
 visualize(new_image); % fill in this function
 
 end
