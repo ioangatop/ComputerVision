@@ -48,7 +48,8 @@ for i = 1:h
                 B = scriptI * iVector;
                 g = pinv(A)*B; % Moore-Penrose pseudo-inverse
             else
-                g = mldivide(iVector, scriptV);
+                %g = mldivide(iVector, scriptV);
+                g = pinv(scriptV)*iVector;
             end
 
             % Measuring Albedo
@@ -59,7 +60,6 @@ for i = 1:h
         end
     end
 end
-
 % Show albedo
 % imshow(albedo)
 
