@@ -2,6 +2,14 @@ ballImage = imread('ball.png');
 ballAlbedoImage = imread('ball_albedo.png');
 ballShadingImage = imread('ball_shading.png');
 
+size(ballAlbedoImage(ballAlbedoImage > 0))
+
+ballAlbedoImage(ballAlbedoImage > 0)
+
+%ballAlbedoImage(ballAlbedoImage > 0)(:, :, 1) = 255;
+%(ballAlbedoImage(ballAlbedoImage > 0)(:, :, 2) = 0;
+%(ballAlbedoImage(ballAlbedoImage > 0)(:, :, 3) = 0;
+
 % newImage = imfuse(ballAlbedoImage, ballShadingImage,'blend','Scaling','joint');
 
 norm_ballAlbedoImage = im2double(ballAlbedoImage);
