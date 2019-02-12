@@ -16,9 +16,9 @@ function [] = AWB(img_name)
     Bm = mean(B(:));
 
     % generate the corrected grayworld 128 part
-    r = 128/Rm
-    g = 128/Gm
-    b = 128/Bm
+    r = 128/Rm;
+    g = 128/Gm;
+    b = 128/Bm;
 
     % initialize the "corrected" image with zeros
     [h, w, channels] = size(I);
