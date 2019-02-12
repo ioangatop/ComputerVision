@@ -1,7 +1,5 @@
-function [] = AWB(img_name)
+function [Ic] = AWB(I)
 
-    % read the image
-    I = imread(img_name);
 
     I = im2double(I);
 
