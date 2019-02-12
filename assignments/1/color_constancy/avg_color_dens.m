@@ -1,5 +1,6 @@
-function [] = color_dens(img, color)    
-    % Get the color
+function [avr_color] = avg_color_dens(img,color)
+%AVG_COLOR_DENS Summary of this function goes here
+%   Detailed explanation goes here
     if color == 'red'
         color_img = img(:,:,1);
         color = 'r';
@@ -13,13 +14,7 @@ function [] = color_dens(img, color)
         disp('No valid option, please give argument red, green or blue');
         return;
     end
-   
-    % Get the img shape
-    [h, w, c] = size(img);
     
-    % plot
-    figure
-    subplot(2,1,1), imshow(img), line([1,w], [h/2, h/2], 'color', color);
-    subplot(2,1,2), plot(color_img(:,h/2));
+    avr_color = mean(color_img, 'all');
 end
 

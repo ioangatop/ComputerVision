@@ -1,0 +1,9 @@
+img = imread('awb.jpg');
+
+new_img = AWB(img);
+% 
+% color_dens(img, 'red');
+% color_dens(new_img, 'red');
+
+avg_color_dens(img,color)
+avg_color_dens(img,color)
