@@ -1,14 +1,12 @@
 function [] = color_dens(img, color)    
     % Get the color
+    [h, w, ~] = size(img);
     if color == 'red'
-        color_img = img(:,:,1);
-        color = 'r';
+        color_img = reshape(img(:,:,1), [h*w, 1]);
     elseif color == 'green'
-        color_img = img(:,:,2);
-        color = 'g'
+        color_img = reshape(img(:,:,2), [h*w, 1]);
     elseif color == 'blue'
-        color_img = img(:,:,3);
-        color = 'b'
+        color_img = reshape(img(:,:,3), [h*w, 1]);
     else
         disp('No valid option, please give argument red, green or blue');
         return;
@@ -19,7 +17,7 @@ function [] = color_dens(img, color)
     
     % plot
     figure
-    subplot(2,1,1), imshow(img), line([1,w], [h/2, h/2], 'color', color);
-    subplot(2,1,2), plot(color_img(:,h/2));
+    subplot(2,1,1), imshow(img);
+    subplot(2,1,2), plot(color_img(:,:));
 end
 
