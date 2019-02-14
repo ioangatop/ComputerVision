@@ -7,14 +7,14 @@ function visualize(input_image)
         % this will plot the density of the colors from white (low) ->
         % black (high)
         firstChannel   = input_image(:,:,1);
-        secondChannel = input_image(:,:,2);
-        thirdChannel  = input_image(:,:,3);
+        seChannel = input_image(:,:,2);
+        blueChannel  = input_image(:,:,3);
 
         figure;
         subplot(2, 2, 1), imshow(input_image),  title('Origina Image');
-        subplot(2, 2, 2), imshow(firstChannel),   title('First Color Channel');
-        subplot(2, 2, 3), imshow(secondChannel), title('Second Color Channel');
-        subplot(2, 2, 4), imshow(thirdChannel),  title('Thrird Color Channel');
+        subplot(2, 2, 2), imshow(redChannel),   title('First Color Channel');
+        subplot(2, 2, 3), imshow(greenChannel), title('Second Color Channel');
+        subplot(2, 2, 4), imshow(blueChannel),  title('Thrird Color Channel');
     
     else
         

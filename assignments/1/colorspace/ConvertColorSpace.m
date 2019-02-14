@@ -36,11 +36,7 @@ else
     return;
 end
 
-% The function 'visualize' has been moved insides the ifs statements
-% because problem raises from the 'gray' parts, where we compute and
-% plot 4 different images
-
-% Initial position of 'visualize' function
+% Visualize Image
 visualize(new_image); % fill in this function
 
 end
