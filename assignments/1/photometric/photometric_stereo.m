@@ -6,7 +6,7 @@ disp('Part 1: Photometric Stereo')
 
 % obtain many images in a fixed view under different illumination
 disp('Loading images...')
-image_dir = './photometrics_images/SphereGray25/';   % TODO: get the path of the script
+image_dir = './photometrics_images/MonkeyColor/';   % TODO: get the path of the script
 %image_ext = '*.png';
 
 [image_stack, scriptV] = load_syn_images(image_dir);
@@ -38,7 +38,12 @@ show_height_maps(height_map_col, height_map_row, height_map_avg);
 
 
 %% Face
-[image_stack, scriptV] = load_face_images('./photometrics_images/yaleB02/');
+
+% this is the provided one
+% [image_stack, scriptV] = load_face_images('./photometrics_images/yaleB02/');
+% load face images for exercise 1.4 with azimuth correciton
+[image_stack, scriptV] = load_face_images_azimuth_correction('./photometrics_images/yaleB02/');
+
 [h, w, n] = size(image_stack);
 fprintf('Finish loading %d images.\n\n', n);
 disp('Computing surface albedo and normal map...')
@@ -53,8 +58,11 @@ SE(SE <= threshold) = NaN; % for good visualization
 fprintf('Number of outliers: %d\n\n', sum(sum(SE > threshold)));
 
 %% compute the surface height
-height_map = construct_surface( p, q );
+height_map_col = construct_surface( p, q, 'column' );
+height_map_row = construct_surface(p,q, 'row');
+height_map_avg = construct_surface(p,q, 'average');
 
 show_results(albedo, normals, SE);
-show_model(albedo, height_map);
-
+show_model(albedo, height_map_col);
+show_model(albedo, height_map_row);
+show_model(albedo, height_map_avg);
