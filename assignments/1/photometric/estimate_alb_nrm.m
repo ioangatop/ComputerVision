@@ -10,7 +10,10 @@ function [ albedo, normal ] = estimate_alb_nrm( image_stack, scriptV, shadow_tri
 
 [h, w, images_count] = size(image_stack);
 
-if nargin == 2
+disp(shadow_trick);
+
+if shadow_trick == 1
+    disp('shadow trick');
     shadow_trick = true;
 end
 
