@@ -16,7 +16,7 @@ function [] = color_dens(img, color)
     [h, w, c] = size(img);
     
     % plot
-    figure
+    figure(1)
     subplot(2,1,1), imshow(img);
     subplot(2,1,2), plot(color_img(:,:));
 end

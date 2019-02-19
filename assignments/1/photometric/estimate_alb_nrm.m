@@ -24,13 +24,6 @@ albedo = zeros(h, w, 1);
 normal = zeros(h, w, 3);
 
 % =========================================================================
-% YOUR CODE GOES HERE
-% for each point in the image array
-%   stack image values into a vector i
-%   construct the diagonal matrix scriptI
-%   solve scriptI * scriptV * g = scriptI * i to obtain g for this point
-%   albedo at this point is |g|
-%   normal at this point is g / |g|
 
 for i = 1:h
     for j = 1:w
@@ -51,7 +44,6 @@ for i = 1:h
                 B = scriptI * iVector;
                 g = pinv(A)*B; % Moore-Penrose pseudo-inverse
             else
-                %g = mldivide(iVector, scriptV);
                 g = pinv(scriptV)*iVector;
             end
 
@@ -63,8 +55,6 @@ for i = 1:h
         end
     end
 end
-% Show albedo
-% imshow(albedo)
 
 % =========================================================================
 end

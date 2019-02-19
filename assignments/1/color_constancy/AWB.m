@@ -32,7 +32,7 @@ function [Ic] = AWB(I)
     Ic = uint8(Ic);
 
     % and show the figure
-    figure 
+    figure(3)
     subplot(1,2,1)
     imshow(I)
     title('Original picture')

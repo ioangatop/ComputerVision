@@ -24,14 +24,14 @@ function [] = reduction(img1, img2, color)
     img = cat(2, img1, img2);
     
     % plot
-    figure
+    figure(2)
     subplot(2,1,1), imshow(img), ...
         xlabel('left: original image, right: after color correction');
     
    avg = 100*(color_img2(:,:) - color_img1(:,:))./(color_img2(:,:) + color_img1(:,:));
     subplot(2,1,2), plot(avg), ...
         ylabel('(red_{right} - red_{left})%'), xlabel('Pixes width'),... 
-        axis([0 w 0 max(avg)+0.5]) ,...
+        % axis([0 h*w 0 max(avg)+0.5]) ,...
         title(sprintf('Change of %s pixels between the two images', color));
     
 end
