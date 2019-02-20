@@ -1,11 +1,16 @@
 function [ imOut ] = denoise( image, kernel_type, varargin)
 
+% convert images to double
+image = double(image);
+
 switch kernel_type
     case 'box'
-        fprintf('Not implemented\n')
+        filter = imboxfilt(varargin);
     case 'median'
-        fprintf('Not implemented\n')
+        filter = medfilt2(image, varargin);
     case 'gaussian'
-        fprintf('Not implemented\n')
+        filter = gauss2D( varargin );
 end
+
+imOut = imfilter(image ,filter);
 end

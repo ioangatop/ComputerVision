@@ -4,6 +4,7 @@ function G = gauss1D( sigma , kernel_size )
         error('kernel_size must be odd, otherwise the filter will not have a center to convolve on')
     end
     %% solution
+    % get the range of x: [-x_limit, x_limit]
     x_limit = floor(kernel_size/2);
     i = 1;
     for x = -x_limit:x_limit
