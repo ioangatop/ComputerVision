@@ -12,7 +12,14 @@ h = 512;
 w = 512;
 albedo_array = zeros(h, w, 3);
 normal_array = zeros(h, w, 3, 3);
-for i = 1:3
+use_three_channels = true;
+
+number_of_channels = 1;
+if use_three_channels
+   number_of_channels = 3; 
+end
+
+for i = 1:number_of_channels
     [image_stack, scriptV] = load_syn_images(image_dir, i);
     [h, w, n] = size(image_stack);
     fprintf('Finish loading %d images.\n\n', n);
@@ -25,8 +32,13 @@ for i = 1:3
     albedo_array(:,:,i) = albedo_temp;
 end
 
-albedo = cat(3, albedo_array(:,:,1), albedo_array(:,:,2), albedo_array(:,:,3));
-normals = (normal_array(:,:,:,1) + normal_array(:,:,:,2) + normal_array(:,:,:,3))/3;
+if use_three_channels
+    albedo = cat(3, albedo_array(:,:,1), albedo_array(:,:,2), albedo_array(:,:,3));
+    normals = (normal_array(:,:,:,1) + normal_array(:,:,:,2) + normal_array(:,:,:,3))/3;
+else
+    albedo = albedo_array(:, :, 1)
+    normals = normal_array(:,:,:,1)
+end
 
 %% integrability check: is (dp / dy  -  dq / dx) ^ 2 small everywhere?
 disp('Integrability checking')
@@ -50,8 +62,6 @@ show_height_maps(height_map_col, height_map_row, height_map_avg);
 
 %% Face
 
-% this is the provided one
-% [image_stack, scriptV] = load_face_images('./photometrics_images/yaleB02/');
 % load face images for exercise 1.4 with azimuth correciton
 [image_stack, scriptV] = load_face_images_azimuth_correction('./photometrics_images/yaleB02/');
 
