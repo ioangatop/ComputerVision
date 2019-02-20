@@ -20,11 +20,23 @@ PSNR_gaussian =  myPSNR( I, J_gauss );
 
 % Denoise salt and pepper noise
 
-% box
+% gaussian
 im = denoise( J_sap, 'box', 3);
+figure
+imshow(J_sap)
+figure
+imshow(im)
 
-% median
+% gaussian
 im = denoise( J_sap, 'median', 3);
+figure
+imshow(J_sap)
+figure
+imshow(im)
 
 % gaussian
 im = denoise( J_sap, 'gaussian', 2, 5);
+figure
+imshow(J_sap)
+figure
+imshow(im)
