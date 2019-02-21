@@ -65,10 +65,10 @@ myGabor_imaginary = gaussianEnv * sinCarrier;
 myGabor(:,:,1) = myGabor_real;
 myGabor(:,:,2) = myGabor_imaginary;
 
-figure;
-title(strcat('Theta' , num2str(theta)))
-subplot(121), imshow(myGabor_real,[]);
-subplot(122), imshow(myGabor_imaginary, []);
+%figure;
+%title(strcat('Theta' , num2str(theta)))
+%subplot(121), imshow(myGabor_real,[]);
+%subplot(122), imshow(myGabor_imaginary, []);
 end
 
 

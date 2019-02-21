@@ -94,9 +94,6 @@ for ii = 1:length(lambdas)
             
             % Create a Gabor filter with the specs above. 
             % (We also record the settings in which they are created. )
-            % // TODO: Implement the function createGabor() following
-            %          the guidelines in the given function template.
-            %          ** See createGabor.m for instructions ** //
             gaborFilterBank(filterNo).filterPairs = createGabor( sigma, theta, lambda, psi, gamma );
             gaborFilterBank(filterNo).sigma       = sigma;
             gaborFilterBank(filterNo).lambda      = lambda;
@@ -133,8 +130,11 @@ fprintf('--------------------------------------\n')
 %            explain what works better and why shortly in the report.
 featureMaps = cell(length(gaborFilterBank),1);
 for jj = 1 : length(gaborFilterBank)
-    real_out =  % \\TODO: filter the grayscale input with real part of the Gabor
-    imag_out =  % \\TODO: filter the grayscale input with imaginary part of the Gabor
+    real_out = imfilter(im2double(img_gray), gaborFilterBank(jj).filterPairs(:,:,1), 'symmetric');
+    
+    % \\TODO: filter the grayscale input with real part of the Gabor
+    imag_out = imfilter(im2double(img_gray), gaborFilterBank(jj).filterPairs(:,:,2), 'symmetric');
+    % \\TODO: filter the grayscale input with imaginary part of the Gabor
     featureMaps{jj} = cat(3, real_out, imag_out);
     
     % Visualize the filter responses if you wish.
@@ -145,11 +145,10 @@ for jj = 1 : length(gaborFilterBank)
                                                                                                               gaborFilterBank(jj).sigma));
         subplot(122), imshow(imag_out), title(sprintf('Im[h(x,y)], \\lambda = %f, \\theta = %f, \\sigma = %f',gaborFilterBank(jj).lambda,...
                                                                                                               gaborFilterBank(jj).theta,...
-                                                                                                              gaborFilterBank(jj).sigma));
+                                                                                                   gaborFilterBank(jj).sigma));
         pause(1)
-    end
+        end
 end
-
 
 %% Compute the magnitude
 % Now, you will compute the magnitude of the output responses.
@@ -158,7 +157,8 @@ featureMags =  cell(length(gaborFilterBank),1);
 for jj = 1:length(featureMaps)
     real_part = featureMaps{jj}(:,:,1);
     imag_part = featureMaps{jj}(:,:,2);
-    featureMags{jj} = % \\TODO: Compute the magnitude here
+    featureMags{jj} = sqrt(real_part.^2 + imag_part.^2);
+    % \\TODO: Compute the magnitude here
     
     % Visualize the magnitude response if you wish.
     if visFlag
@@ -183,6 +183,9 @@ end
 % \\ Hint: doc imfilter, doc fspecial or doc imgaussfilt.  
 features = zeros(numRows, numCols, length(featureMags));
 if smoothingFlag
+    for jj = 1:length(featureMags)
+        features(:,:,jj) = imgaussfilt(featureMags{jj}, 2);
+    end
     % \\TODO:
     %FOR_LOOP
         % i)  filter the magnitude response with appropriate Gaussian kernels
@@ -208,7 +211,7 @@ features = reshape(features, numRows * numCols, []);
 % \\ Hint: see http://ufldl.stanford.edu/wiki/index.php/Data_Preprocessing
 %          for more information. \\
 
-features = % \\ TODO: i)  Implement standardization on matrix called features. 
+features = im2double(features);% \\ TODO: i)  Implement standardization on matrix called features. 
            %          ii) Return the standardized data matrix.
 
 
@@ -227,11 +230,11 @@ imshow(feature2DImage,[]), title('Pixel representation projected onto first PC')
 % \\ Hint-2: use the parameter k defined in the first section when calling
 %            MATLAB's built-in kmeans function.
 tic
-pixLabels = % \\TODO: Return cluster labels per pixel
+pixLabels = kmeans(features, k); % \\TODO: Return cluster labels per pixel
 ctime = toc;
 fprintf('Clustering completed in %.3f seconds.\n', ctime);
 
-
+size(pixLabels)
 
 % Visualize the clustering by reshaping pixLabels into original grayscale
 % input size [numRows numCols].
