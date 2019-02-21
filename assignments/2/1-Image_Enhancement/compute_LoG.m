@@ -11,7 +11,7 @@ switch LOG_type
         H_laplacian = fspecial('laplacian');
         % filter gaussian FIRST
         imOut = imfilter(image, H_gaussian);
-        imOut = imfilter(image, H_laplacian);
+        imOut = imfilter(imOut, H_laplacian);
         
     case 2
         %method 2
