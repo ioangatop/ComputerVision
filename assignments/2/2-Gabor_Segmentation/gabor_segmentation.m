@@ -67,12 +67,12 @@ n = floor(log2(lambdaMax/lambdaMin));
 lambdas = 2.^(0:(n-2)) * lambdaMin;
 
 % Define the set of orientations for the Gaussian envelope.
-dTheta      = 2*pi/8;                  % \\ the step size
+dTheta      = 2*pi/2;                  % \\ the step size
 orientations = 0:dTheta:(pi/2);       
 
 % Define the set of sigmas for the Gaussian envelope. Sigma here defines 
 % the standard deviation, or the spread of the Gaussian. 
-sigmas = [1,2]; 
+sigmas = [1,4]; 
 
 % Now you can create the filterbank. We provide you with a MATLAB struct
 % called gaborFilterBank in which we will hold the filters and their
@@ -130,10 +130,10 @@ fprintf('--------------------------------------\n')
 %            explain what works better and why shortly in the report.
 featureMaps = cell(length(gaborFilterBank),1);
 for jj = 1 : length(gaborFilterBank)
-    real_out = imfilter(im2double(img_gray), gaborFilterBank(jj).filterPairs(:,:,1), 'symmetric');
+    real_out = imfilter(img_gray, gaborFilterBank(jj).filterPairs(:,:,1), 'symmetric', 'conv');
     
     % \\TODO: filter the grayscale input with real part of the Gabor
-    imag_out = imfilter(im2double(img_gray), gaborFilterBank(jj).filterPairs(:,:,2), 'symmetric');
+    imag_out = imfilter(img_gray, gaborFilterBank(jj).filterPairs(:,:,2), 'symmetric', 'conv');
     % \\TODO: filter the grayscale input with imaginary part of the Gabor
     featureMaps{jj} = cat(3, real_out, imag_out);
     
@@ -147,7 +147,7 @@ for jj = 1 : length(gaborFilterBank)
                                                                                                               gaborFilterBank(jj).theta,...
                                                                                                    gaborFilterBank(jj).sigma));
         pause(1)
-        end
+    end
 end
 
 %% Compute the magnitude
@@ -155,8 +155,9 @@ end
 % \\ Hint: (real_part^2 + imaginary_part^2)^(1/2) \\
 featureMags =  cell(length(gaborFilterBank),1);
 for jj = 1:length(featureMaps)
-    real_part = featureMaps{jj}(:,:,1);
-    imag_part = featureMaps{jj}(:,:,2);
+    real_part = im2double(featureMaps{jj}(:,:,1));
+    imag_part = im2double(featureMaps{jj}(:,:,2));
+    
     featureMags{jj} = sqrt(real_part.^2 + imag_part.^2);
     % \\TODO: Compute the magnitude here
     
@@ -183,8 +184,8 @@ end
 % \\ Hint: doc imfilter, doc fspecial or doc imgaussfilt.  
 features = zeros(numRows, numCols, length(featureMags));
 if smoothingFlag
-    for jj = 1:length(featureMags)
-        features(:,:,jj) = imgaussfilt(featureMags{jj}, 2);
+    for i = 1:length(featureMags)
+        features(:,:,i) = imgaussfilt(featureMags{i},8); 
     end
     % \\TODO:
     %FOR_LOOP
@@ -211,8 +212,11 @@ features = reshape(features, numRows * numCols, []);
 % \\ Hint: see http://ufldl.stanford.edu/wiki/index.php/Data_Preprocessing
 %          for more information. \\
 
-features = im2double(features);% \\ TODO: i)  Implement standardization on matrix called features. 
-           %          ii) Return the standardized data matrix.
+% features = bsxfun(@minus, features, mean(features));
+% features = bsxfun(@rdivide,features,std(features));
+features = im2double(features);
+% \\ TODO: i)  Implement standardization on matrix called features. 
+%          ii) Return the standardized data matrix.
 
 
 % (Optional) Visualize the saliency map using the first principal component 
@@ -223,6 +227,7 @@ feature2DImage = reshape(features*coeff(:,1),numRows,numCols);
 figure(4)
 imshow(feature2DImage,[]), title('Pixel representation projected onto first PC')
 
+%return;
 
 % Apply k-means algorithm to cluster pixels using the data matrix,
 % features. 
@@ -230,7 +235,7 @@ imshow(feature2DImage,[]), title('Pixel representation projected onto first PC')
 % \\ Hint-2: use the parameter k defined in the first section when calling
 %            MATLAB's built-in kmeans function.
 tic
-pixLabels = kmeans(features, k); % \\TODO: Return cluster labels per pixel
+pixLabels = kmeans(features, k, 'Replicates', 5); % \\TODO: Return cluster labels per pixel
 ctime = toc;
 fprintf('Clustering completed in %.3f seconds.\n', ctime);
 
