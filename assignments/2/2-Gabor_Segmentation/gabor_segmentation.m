@@ -17,22 +17,34 @@ switch image_id
     case 'Kobi'
         img = imread('kobi.png');
         resize_factor = 0.25;
+        dTheta        = pi/10; % \\ the step size
+        sigmas        = [1, 4]; 
     case 'Polar'
         img = imread('./data/polar-bear-hiding.jpg');
         resize_factor = 0.75;
+        dTheta        = pi/20; % \\ the step size
+        sigmas        = [1, 3]; 
     case 'Robin-1'
         img = imread('./data/robin-1.jpg');
         resize_factor = 1;
+        dTheta        = pi/3; % \\ the step size
+        sigmas        = [2.5]; 
     case 'Robin-2'
         img = imread('./data/robin-2.jpg');
         resize_factor = 0.5;
+        dTheta        = pi/35; % \\ the step size
+        sigmas        = [0.3, 0.5]; 
     case 'Cows'
         img = imread('./data/cows.jpg');
         resize_factor = 0.5;
+        dTheta        = pi/3; % \\ the step size
+        sigmas        = [5, 0.9]; 
     case 'SciencePark'
         img = imread('./data/sciencepark.jpg');
         img = permute(img,[2,1,3]);
-        resize_factor = 0.2;      
+        resize_factor = 0.2;
+        dTheta        = 1*pi/3; % \\ the step size
+        sigmas        = [2.5];
         
     otherwise
         error(err_msg)
@@ -67,12 +79,11 @@ n = floor(log2(lambdaMax/lambdaMin));
 lambdas = 2.^(0:(n-2)) * lambdaMin;
 
 % Define the set of orientations for the Gaussian envelope.
-dTheta      = 2*pi/2;                  % \\ the step size
 orientations = 0:dTheta:(pi/2);       
 
 % Define the set of sigmas for the Gaussian envelope. Sigma here defines 
 % the standard deviation, or the spread of the Gaussian. 
-sigmas = [1,4]; 
+
 
 % Now you can create the filterbank. We provide you with a MATLAB struct
 % called gaborFilterBank in which we will hold the filters and their
