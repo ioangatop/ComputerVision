@@ -32,7 +32,7 @@ H = (A.*C - B.^2) - 0.04.*(A + C).^2;
 
 % n: nxn window of neighbours
 n = 3;
-threshold = 8500000;
+threshold = 70000000;
 [h, w, ~] = size(H);
 
 % the points where they indicate corner if = 1, otherwise = 0
@@ -53,8 +53,13 @@ end
 % get rows and columns, flattened 
 [r, c] = find(harris_points);
 
-% Trick to show the detected corners
+% Plot images
 I = uint8(I);
-figure, imshow(I), hold on, plot(c, r, 'ys');
+
+figure;
+subplot(1, 3, 1), imshow(I), hold on, plot(c, r, 'ys');
+subplot(1, 3, 2), imshow(Ix)
+subplot(1, 3, 3), imshow(Iy)
+
 end
 
