@@ -97,15 +97,21 @@ psnr_gauss_median_7 = myPSNR( I, denoised_gauss_median_7 );
 %% gaussian filter
 sigmaList = {.5,1,2};
 filterList = {3,5,7};
-figure
-title('Gaussian Filters with Different parameters');
-subplotCounter = 1;
-for sigma = 1:length(sigmaList)
+figure();
+for sigma = 1:length(sigmalist)
     for filter = 1:length(filterList)
        denoisedGaussian = denoise(J_gauss, 'gaussian', sigmaList{sigma}, filterList{filter}); 
-       PSNR = myPSNR(I, denoisedGaussian);
-       subplot(3, 3, subplotCounter), imshow(denoisedGaussian),  xlabel(['\sigma = ', num2str(sigmaList{sigma}),', H = ',num2str(filterList{filter}), ', PSNR = ', num2str(PSNR)]);
-       subplotCounter = subplotCounter + 1;
+       title('Gaussian noise (\sigma %d, H  - Gaussian filter', sigmaList{sigma}, filterList{filter});
     end
 end 
 
+
+denoised_gauss_gaussian_3 = denoise( J_gauss, 'gaussian', 2, 3);
+denoised_gauss_gaussian_5 = denoise( J_gauss, 'gaussian', 2, 5);
+denoised_gauss_gaussian_7 = denoise( J_gauss, 'gaussian', 2, 7);
+
+figure();
+subplot(1, 3, 1), imshow(denoised_gauss_gaussian_3), xlabel('Gaussian filtering 3x3','FontName', 'Helvetica Neue', 'FontSize', 10);
+subplot(1, 3, 2), imshow(denoised_gauss_gaussian_5), xlabel('Gaussian filtering 5x5','FontName', 'Helvetica Neue', 'FontSize', 10);
+subplot(1, 3, 3), imshow(denoised_gauss_gaussian_7), xlabel('Gaussian filtering 7x7','FontName', 'Helvetica Neue', 'FontSize', 10);
+title('Gaussian noise - Gaussian filter');

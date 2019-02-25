@@ -4,7 +4,8 @@ function [Gx, Gy, im_magnitude,im_direction] = compute_gradient(image)
 I = im2double(image);
 
 % Sobel filters
-% could also use Sx = fspecial('sobel'), Sy = fspecial('sobel)' -> Sy'
+% Not allowed, but for testing purposes for the exercise:
+% Sx = fspecial('sobel'), Sy = fspecial('sobel)' -> Sy'
 Sx = [ 
    [1, 0, -1],
    [2, 0, -2],

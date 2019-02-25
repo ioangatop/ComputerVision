@@ -17,11 +17,10 @@ title('Image');
 
 % show the gradients
 figure
-subplot(2, 1, 1)
 imshow(Gx)
 title('Gradient X');
 
-subplot(2, 1, 2)
+figure
 imshow(Gy)
 title('Gradient Y');
 
@@ -34,7 +33,7 @@ title('Magnitude');
 
 figure
 % show direction
-imshow(im_direction / pi);
+imshow(im_direction);
 title('Direction');
 
 figure
