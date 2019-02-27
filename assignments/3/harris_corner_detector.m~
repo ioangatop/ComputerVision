@@ -7,11 +7,10 @@ function [H, r, c] = harris_corner_detector(I)
 % Parameters
 radius = 2;
 sigma = 1; 
-threshold = 330000000 ; % 50100000 for I; 330000000 for J
+threshold = 140000000 ; % 50100000 for I; 140000000 for J
 n = 2*radius + 1;
 
 % Make I grayscale if it is now already
-J = I;
 [~, ~, c] = size(I);
 if c ~= 1
     I = rgb2gray(I);
@@ -21,15 +20,12 @@ end
 I = double(I);
 
 % Sobel filters - First order Gaussian derivative
-Ix = fspecial('sobel')';
-Iy = fspecial('sobel');
+Ix = fspecial('sobel') ;
+Iy = fspecial('sobel')';
 
 % Convolving the Ix and Iy with the image
 Ix = imfilter(I, Ix);
 Iy = imfilter(I, Iy);
-Jx = imfilter(J, Ix);
-Jy = imfilter(J, Iy);
-
 
 % Gaussian filter
 G = fspecial('gaussian', max(1, fix(6*sigma)), sigma);
@@ -64,10 +60,12 @@ end
 [r, c] = find(harris_points);
 
 % Plot images
+I = uint8(I);
+
 figure;
-subplot(1, 3, 1), imshow(J), hold on, plot(c, r, 'ys');
-subplot(1, 3, 2), imshow(Ix), xlabel('I_x');
-subplot(1, 3, 3), imshow(Iy), xlabel('I_y');
+% subplot(1, 3, 1), imshow(I), hold on, plot(c, r, 'ys');
+% subplot(1, 3, 2), imshow(Ix)
+% subplot(1, 3, 3), imshow(Iy)
 
 end
 
