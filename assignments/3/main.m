@@ -7,4 +7,3 @@ I_45 = imrotate(I, 45);
 I_90 = imrotate(I, 90);
 
 [H, r, c]= harris_corner_detector(J);
-% [H, r, c]= harris_corner_detector(I_90);

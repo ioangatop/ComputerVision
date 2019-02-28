@@ -7,7 +7,7 @@ function [H, r, c] = harris_corner_detector(I)
 % Parameters
 radius = 2;
 sigma = 1; 
-threshold = 330000000 ; % 50100000 for I; 330000000 for J
+threshold = 100000000 ; % 50100000 for I; 330000000 for J % 200000000
 n = 2*radius + 1;
 
 % Make I grayscale if it is now already
@@ -65,9 +65,10 @@ end
 
 % Plot images
 figure;
-subplot(1, 3, 1), imshow(J), hold on, plot(c, r, 'ys');
-subplot(1, 3, 2), imshow(Ix), xlabel('I_x');
-subplot(1, 3, 3), imshow(Iy), xlabel('I_y');
+imshow(J), hold on, plot(c, r, 'ys');
+% subplot(1, 3, 1), imshow(J), hold on, plot(c, r, 'ys');
+% subplot(1, 3, 2), imshow(Ix), xlabel('I_x');
+% subplot(1, 3, 3), imshow(Iy), xlabel('I_y');
 
 end
 
