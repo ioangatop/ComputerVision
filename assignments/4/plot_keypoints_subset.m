@@ -24,7 +24,7 @@ J = single(J) ;
 %% We will take a subset of matches and scores
 % i) Generate 10 random numbers - indexes
 [~, columns] = size(scores);
-r = randi([0 columns],1,samples);
+r = randi([1 columns],1,samples);
 
 % ii) Get the subset using this indexes
 % -- in this way, we can get the corresponding scores as well
@@ -54,8 +54,8 @@ end
 
 % Connecting matching pairs with lines where each line has a random color
 h = line([xa ; xb], [ya ; yb]) ;
-for i=1:10
-    set(h(i),'linewidth', 2, 'color', random_color(:,i)) ;
+for i=1:samples
+    set(h(i),'linewidth', 1.5, 'color', random_color(:,i)) ;
 end
 
 vl_plotframe(f_I(:,sub_matches(1,:))) ;
