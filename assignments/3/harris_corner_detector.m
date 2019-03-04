@@ -63,8 +63,8 @@ end
 % Plot images
 figure;
 subplot(1, 3, 1), imshow(J), hold on, plot(c, r, 'ys');
-subplot(1, 3, 2), imshow(Ix), xlabel('I_x');
-subplot(1, 3, 3), imshow(Iy), xlabel('I_y');
+subplot(1, 3, 2), imshow(Ix, []), xlabel('I_x');
+subplot(1, 3, 3), imshow(Iy, []), xlabel('I_y');
 
 end
 
