@@ -27,9 +27,6 @@ Iy = fspecial('sobel');
 % Convolving the Ix and Iy with the image
 Ix = imfilter(I, Ix);
 Iy = imfilter(I, Iy);
-Jx = imfilter(J, Ix);
-Jy = imfilter(J, Iy);
-
 
 % Gaussian filter
 G = fspecial('gaussian', max(1, fix(6*sigma)), sigma);
