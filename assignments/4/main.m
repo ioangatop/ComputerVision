@@ -1,5 +1,8 @@
 clear; clc;
 
+% Command to run vlfeat
+run vlfeat-0.9.21/toolbox/vl_setup
+
 % Read the images
 I = imread('boat1.pgm');
 J = imread('boat2.pgm');
