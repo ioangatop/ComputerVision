@@ -35,28 +35,25 @@ J = single(J) ;
 % Image 1
 perm = randperm(size(f_I, 2)) ;
 sel = perm() ;
-figure; clf;
-imshow(I_raw), hold on , vl_plotframe(f_I(:,sel)) ;
+figure; hold off;
+imshow(I_raw), hold on, vl_plotframe(f_I(:,sel)) ;
 set(vl_plotframe(f_I(:,sel)),'color','r','linewidth',2) ;
 
 % Image 2
+figure; hold off;
 [f_J, d_J] = vl_sift(J) ;
 perm = randperm(size(f_J,2)) ;
 sel = perm() ;
-figure; clf;
-imshow(J_raw), hold on , vl_plotframe(f_J(:,sel)) ;
+imshow(J_raw), hold on, vl_plotframe(f_J(:,sel)) ;
 set(vl_plotframe(f_J(:,sel)),'color','y','linewidth',2) ;
-% figure; clf;
-% imshow(J_raw), hold on , vl_plotframe(f(:,sel)) ;
-% set(vl_plotframe(f(:,sel)),'color','y','linewidth',2) ;
 
 %% 2. Characterize the local appearance of the regions around interest points
 % Overlay the descriptors
-figure; clf;
+figure; hold off;
 imshow(I_raw), hold on , vl_plotsiftdescriptor(d(:,sel),f(:,sel)) ;
 set(vl_plotsiftdescriptor(d(:,sel),f(:,sel)),'color','g');
 
-figure; clf;
+figure; hold off;
 imshow(J_raw), hold on , vl_plotsiftdescriptor(d(:,sel),f(:,sel)) ;
 set(vl_plotsiftdescriptor(d(:,sel),f(:,sel)),'color','g');
 
@@ -86,7 +83,7 @@ for i = 1:samples
 end
 
 % plot on the figure of the two images
-figure ; clf;
+figure ; hold off;
 imshow(cat(2, I_raw, J_raw) );
 hold on ;
 
