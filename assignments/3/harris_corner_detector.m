@@ -1,4 +1,4 @@
-function [H, r, c] = harris_corner_detector(I)
+function [H, r, c] = harris_corner_detector(I, threshold)
 %   Harris_corner_detector 
 %
 %   RETURNS: Harris matrix H, the rows of the detected corner points r, 
@@ -7,7 +7,6 @@ function [H, r, c] = harris_corner_detector(I)
 % Parameters
 radius = 2;
 sigma = 1; 
-threshold = 360000000 ; % 50100000 for I; 360000000 for J %
 n = 2*radius + 1;
 
 % Make I grayscale if it is now already
