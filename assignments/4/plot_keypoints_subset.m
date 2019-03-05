@@ -1,4 +1,4 @@
-function [] = plot_keypoints_subset(I, J, matches, scores, f_I, f_J, samples)
+function [] = plot_keypoints_subset(I, J, matches, scores, f_I, f_J, d_I, d_J, samples)
 % plot_keypoints_subset
 %   Takes a random subset of size = samples of all matching points
 %   and plot on the image while connecting the matching pairs with lines.
@@ -55,11 +55,18 @@ for i=1:samples
 end
 
 % 3.4) Plot 
+f_J(1,:) = f_J(1,:) + size(I,2) ;
+
 vl_plotframe(f_I(:,sub_matches(1,:))) ;
 set(vl_plotframe(f_I(:,sub_matches(1,:))), 'color', 'y')
-f_J(1,:) = f_J(1,:) + size(I,2) ;
 vl_plotframe(f_J(:,sub_matches(2,:))) ;
 set(vl_plotframe(f_J(:,sub_matches(2,:))), 'color', 'y')
+
+vl_plotsiftdescriptor(d_I(:,sub_matches(1,:)), f_I(:,sub_matches(1,:))) ;
+set(vl_plotsiftdescriptor(d_I(:,sub_matches(1,:)), f_I(:,sub_matches(1,:))), 'color', 'y')
+
+vl_plotsiftdescriptor(d_J(:,sub_matches(2,:)), f_J(:,sub_matches(2,:))) ;
+set(vl_plotsiftdescriptor(d_J(:,sub_matches(2,:)), f_J(:,sub_matches(2,:))), 'color', 'y')
 axis image off ;
 end
 

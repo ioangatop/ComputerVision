@@ -4,6 +4,7 @@ function [final_grid_x, final_grid_y] = lucas_kanade(image1, image2, visualizati
 % Read the two images and compute gradients for entire image
 im1 = double(image1);
 im2 = double(image2);
+
 [height, width, ~] = size(im1);
 
 region_size = reg_size;
