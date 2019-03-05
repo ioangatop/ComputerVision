@@ -8,6 +8,7 @@ I = imread('person_toy/00000001.jpg');
 [~, r, c] = harris_corner_detector(I, 148000000);
 
 initial_images = load_images(workingDir, '*.jpg');    
+lucas_video(initial_images, r, c)
 %imageFrames = lucas_kanade(r, c)
 
 % videoName = '.avi';

@@ -17,11 +17,11 @@ final_grid_x = [];
 final_grid_y = [];
 
 % Loop over regions in x direction
-for i = 0:nr_of_regions_vertical
+for i = 0:nr_of_regions_horizontal
     one_row_x = [];
     one_row_y = [];
     % Loop over regions in y direction
-    for j = 0:nr_of_regions_horizontal
+    for j = 0:nr_of_regions_vertical
         
         % Cut image in 15x15 regions of gradients iteratively
         A_region1 = gx1(i*region_size+1:(i+1)*region_size, j*region_size+1:(j+1)*region_size).';

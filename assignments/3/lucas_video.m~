@@ -1,0 +1,21 @@
+function [image_array] = lucas_video (images, features_x, features_y)
+%LUCAS_VIDEO Summary of this function goes here
+%   Detailed explanation goes here
+
+[h, w, c, nr_of_images] = size(images);
+
+image_array = zeros(h, w, c, nr_of_images, 'uint8');
+    
+for i=1:nr_of_images-1
+    [vec1, vec2] = lucas_kanade(images(:,:,:,i), images(:,:,:,i+1), false, 1);
+    for x=1:length(features_x)
+        for y=1:length(features_y)
+            features_x(x) = features_x(x) + vec1(x, y);
+            features_y(y) = features_y(y) + vec2(x, y);
+        end
+    end
+    figure; hold off; 
+    imshow(images(:,:,:,i)), hold on, plot(c, r, 'ys');
+    % image_array(:, :, :, ii) = img;
+    end
+end
