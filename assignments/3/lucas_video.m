@@ -10,8 +10,8 @@ for i=1:nr_of_images-1
     [vec1, vec2] = lucas_kanade(images(:,:,:,i), images(:,:,:,i+1), false, 1);
     for k=1:length(features_x)
         temp = features_x(k);
-        features_x(k) = features_x(k) + uint8(vec1(features_x(k), features_y(k)));
-        features_y(k) = features_y(k) + uint8(vec2(temp, features_y(k)));
+        features_x(k) = features_x(k) + round(vec1(features_x(k), features_y(k)));
+        features_y(k) = features_y(k) + round(vec2(temp, features_y(k)));
     end
     hold off;
     imshow(images(:,:,:,i+1)), hold on, plot(features_y, features_x, 'ys');

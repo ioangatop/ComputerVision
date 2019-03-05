@@ -3,8 +3,8 @@ frameRate = 30;
 
 %% Person toy
 
-workingDir = 'person_toy';
-I = imread('person_toy/00000001.jpg');
+workingDir = 'pingpong';
+I = imread('pingpong/0000.jpeg');
 [~, r, c] = harris_corner_detector(I, 148000000);
 
 initial_images = load_images(workingDir, '*.jpg');    
