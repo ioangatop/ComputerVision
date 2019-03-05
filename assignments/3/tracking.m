@@ -1,16 +1,14 @@
 %% Configuration
 frameRate = 30;
 
-
-
 %% Person toy
 
 workingDir = 'person_toy';
 I = imread('person_toy/00000001.jpg');
 [~, r, c] = harris_corner_detector(I, 148000000);
 
-initial_images = load_images(workingDir, '*.jpeg');    
-imageFrames = lucas_kanade(r, c)
+initial_images = load_images(workingDir, '*.jpg');    
+%imageFrames = lucas_kanade(r, c)
 
 % videoName = '.avi';
 % 
@@ -24,11 +22,11 @@ imageFrames = lucas_kanade(r, c)
 
 %% Pingpong
 
-workingDir = 'person_toy';
-
-I = imread('pingpong/0000.jpeg');
-[~, r, c] = harris_corner_detector(I, 360000000);
-
-initial_images = load_images(workingDir, '*.jpeg');    
-imageFrames = lucas_kanade(r, c)
+% workingDir = 'person_toy';
+% 
+% I = imread('pingpong/0000.jpeg');
+% [~, r, c] = harris_corner_detector(I, 360000000);
+% 
+% initial_images = load_images(workingDir, '*.jpeg');    
+% imageFrames = lucas_kanade(r, c)
 
