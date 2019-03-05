@@ -4,10 +4,9 @@ frameRate = 30;
 %% Person toy
 
 workingDir = 'pingpong';
-I = imread('pingpong/0000.jpeg');
-[~, r, c] = harris_corner_detector(I, 148000000);
+[~, r, c] = harris_corner_detector(I, 360000000); %148000000);
 
-initial_images = load_images(workingDir, '*.jpg');    
+initial_images = load_images(workingDir, '*.jpeg');    
 lucas_video(initial_images, r, c)
 %imageFrames = lucas_kanade(r, c)
 
