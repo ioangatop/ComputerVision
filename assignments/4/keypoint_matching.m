@@ -1,4 +1,4 @@
-function [matches, scores, f_I, f_J] = keypoint_matching(I, J)
+function [matches, scores, f_I, f_J, d_I, d_J] = keypoint_matching(I, J)
 % keypoint_matching:
 %   Takes two image pairs I and J as input, 
 %   and return the keypoint matchings between the two images.

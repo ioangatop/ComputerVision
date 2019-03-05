@@ -6,6 +6,9 @@ function [flow] = lucas_kanade(image1, image2)
 % im2 = double(imread("synth2.pgm"));
 im1 = double(image1);
 im2 = double(image2);
+
+im1 = cat(3, im1
+
 [height, width, c] = size(im1);
 
 region_size = 15;
