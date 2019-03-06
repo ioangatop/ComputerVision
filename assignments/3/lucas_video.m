@@ -24,21 +24,12 @@ function [image_array] = lucas_video (images, features_y, features_x)
             current_y = round(features_y(k) / h_regions) + 1;
             
             features_y(k) = features_y(k) + vec2(current_y, current_x);
-            if features_y(k) > h
-                features_y(k) = h;
-            elseif features_y(k) < 1
-                features_y(k) = 1;
-            end
-            
             features_x(k) = features_x(k) + vec1(current_y, current_x);
-            if features_x(k) > w
-                features_x(k) = w;
-            elseif features_x(k) < 1
-                features_x(k) = 1;
-            end
         end
         
-        imshow(images(:,:,:,i+1)); hold on, plot(features_x, features_y, 'ys');
+        valid_features_x = features_x(features_x >= 1 & features_x <= w);
+        valid_features_y = features_y(features_y >= 1 & features_y <= h);
+        imshow(images(:,:,:,i+1)); hold on, plot(valid_features_x, valid_features_y, 'ys');
         f = getframe;
         image_array(:,:,:,i+1) = f.cdata;
     end

@@ -17,11 +17,12 @@ nr_of_regions_vertical = floor(height/region_size)-1;
 final_grid_x = [];
 final_grid_y = [];
 
-% Loop over regions in x direction
+% Loop over regions in y direction
 for i = 0:nr_of_regions_vertical
     one_row_x = [];
     one_row_y = [];
-    % Loop over regions in y direction
+    
+    % Loop over regions in x direction
     for j = 0:nr_of_regions_horizontal
         
         % Cut image in 15x15 regions of gradients iteratively
@@ -46,6 +47,7 @@ for i = 0:nr_of_regions_vertical
         one_row_x = [one_row_x, v(1:1)];
         one_row_y = [one_row_y, v(2:2)];
     end
+    
     final_grid_x = [final_grid_x; one_row_x];
     final_grid_y = [final_grid_y; one_row_y];
 end
