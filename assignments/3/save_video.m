@@ -10,7 +10,7 @@ function [saved] = save_video(videoName, image_array, frameRate)
 
     for ii = 1:number_of_images
 %        img = imread(fullfile(workingDir,imageNames{ii}));
-       writeVideo(outputVideo,image_array(:, :, :, ii));
+       writeVideo(outputVideo, mat2gray(image_array(:, :, :, ii)));
     end
 
     close(outputVideo);

@@ -1,41 +1,37 @@
 %% Configuration
-frameRate = 30;
+frameRate = 24;
 
-%% Person toy
+%% Pingpong
 
 workingDir = 'pingpong';
 I = imread('pingpong/0000.jpeg');
-[~, r, c] = harris_corner_detector(I, 600000000, false);
+[~, r, c] = harris_corner_detector(I, 1000000000, false);
 
 initial_images = load_images(workingDir, '*.jpeg');
 result_images = lucas_video(initial_images, r, c);
 
-% videoName = 'pingpong.avi';
-% 
-% saved = save_video(videoName, result_images, frameRate);
-% if ~saved
-%    return 
-% end
-% 
-% play_video(videoName);
-% 
+videoName = 'pingpong.avi';
 
-%% Pingpong
+saved = save_video(videoName, result_images, frameRate);
+if saved
+    play_video(videoName);
+end
 
-% workingDir = 'person_toy';
-% 
-% I = imread('person_toy/00000001.jpg');
-% [~, r, c] = harris_corner_detector(I, 148000000, false);
-% 
-% initial_images = load_images(workingDir, '*.jpg');
-% result_images = lucas_video(initial_images, r, c);
 
-% videoName = 'person_toy.avi';
+%% Person toy
+ 
+workingDir = 'person_toy';
+
+I = imread('person_toy/00000001.jpg');
+[~, r, c] = harris_corner_detector(I, 140000000, false);
+
+initial_images = load_images(workingDir, '*.jpg');
+result_images = lucas_video(initial_images, r, c);
 % 
-% saved = save_video(videoName, result_images, frameRate);
-% if ~saved
-%    return 
-% end
-% 
-% play_video(fullfile(videoName));
+videoName = 'person_toy.avi';
+
+saved = save_video(videoName, result_images, frameRate);
+if saved
+   play_video(fullfile(videoName));
+end
 

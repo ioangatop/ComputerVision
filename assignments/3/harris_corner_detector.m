@@ -28,16 +28,16 @@ function [H, r, c] = harris_corner_detector(I, threshold, visualize)
     Iy = fspecial('sobel');
 
     % Convolving the Ix and Iy with the image
-    Ix = imfilter(I, Ix);
-    Iy = imfilter(I, Iy);
+    Ix = imfilter(I, Ix, 'replicate', 'same', 'conv');
+    Iy = imfilter(I, Iy, 'replicate', 'same', 'conv');
 
     % Gaussian filter
     G = fspecial('gaussian', max(1, fix(6*sigma)), sigma);
 
     % Convolving with G to compute the elements of Q
-    A = imfilter(Ix.^2, G);
-    C = imfilter(Iy.^2, G);
-    B = imfilter(Ix.*Iy,G);
+    A = imfilter(Ix.^2, G, 'replicate', 'same', 'conv');
+    C = imfilter(Iy.^2, G, 'replicate', 'same', 'conv');
+    B = imfilter(Ix.*Iy,G, 'replicate', 'same', 'conv');
 
     % Cornerness H(x,y) (Harris measure)
     H = (A.*C - B.^2) - 0.04.*(A + C).^2;

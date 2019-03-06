@@ -1,10 +1,14 @@
-function [final_grid_x, final_grid_y] = lucas_kanade(image1, image2, visualization, reg_size)
+function [final_grid_x, final_grid_y] = lucas_kanade(im1, im2, visualization, reg_size)
 % Lucas Kanade Optical flow 
 
 % Read the two images and compute gradients for entire image
-im1 = double(image1);
-im2 = double(image2);
-[gx, gy] = gradient(im1);
+[~, ~, ch] = size(im1);
+if ch == 3
+    im1 = rgb2gray(im1);
+    im2 = rgb2gray(im2);
+end
+im1 = im2double(im1);
+im2 = im2double(im2);
 [height, width, ~] = size(im1);
 
 % Include option for other region sizes, default should be 15
@@ -33,7 +37,7 @@ for i = 0:nr_of_regions_vertical
         % Reshape each region into a 225x2 vector (by stacking each row on
         % top of each other)
         A = [reshape(A_region1, region_size^2, 1), reshape(A_region2, region_size^2, 1)];
-        A_T = A.';
+        %A_T = A.';
         
         % Cut regular image in 15x15 regions 
         b_region1 = im1(i*region_size+1:(i+1)*region_size, j*region_size+1:(j+1)*region_size).';
