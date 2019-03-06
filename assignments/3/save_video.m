@@ -1,14 +1,16 @@
-function [saved] = save_video(videoName, workingDir, frameRate)
-    imageNames = dir(fullfile(workingDir,'*.jpeg'));
-    imageNames = {imageNames.name}';
+function [saved] = save_video(videoName, image_array, frameRate)
+%     imageNames = dir(fullfile(workingDir,'*.jpeg'));
+%     imageNames = {imageNames.name}';
 
-    outputVideo = VideoWriter(fullfile(workingDir,videoName));
+    outputVideo = VideoWriter(fullfile(videoName));
     outputVideo.FrameRate = frameRate;
     open(outputVideo);
+    
+    [~, ~, ~, number_of_images] = size(image_array);
 
-    for ii = 1:length(imageNames)
-       img = imread(fullfile(workingDir,imageNames{ii}));
-       writeVideo(outputVideo,img);
+    for ii = 1:number_of_images
+%        img = imread(fullfile(workingDir,imageNames{ii}));
+       writeVideo(outputVideo,image_array(:, :, :, ii));
     end
 
     close(outputVideo);
