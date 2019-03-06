@@ -10,8 +10,8 @@ clc;
 
 % I = imread('sphere1.ppm');
 % J = imread('sphere2.ppm');
-% lucas_kanade(I, J);
+% lucas_kanade(I, J, true, 15);
 
 I = imread('synth1.pgm');
 J = imread('synth2.pgm');
-lucas_kanade(I, J);
+lucas_kanade(I, J, true, 15);
