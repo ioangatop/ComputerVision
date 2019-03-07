@@ -11,5 +11,7 @@ J = imread('boat2.pgm');
 [matches, scores, f_I, f_J, d_I, d_J] = keypoint_matching(I, J);
 
 % Plot a random subset (size = sample) of all matching points
-sample = 50;
-plot_keypoints_subset(I, J, matches, scores, f_I, f_J, d_I, d_J, sample);
+% sample = 50;
+% plot_keypoints_subset(I, J, matches, scores, f_I, f_J, d_I, d_J, sample);
+
+[sub_matches, sub_scores] = RANSAC(N, P)
