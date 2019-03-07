@@ -1,4 +1,4 @@
-function [sub_matches, sub_scores] = RANSAC(N, P)
+function [] = RANSAC(N, P)
 %   RANSAC 
 %     N: Repeat N times
 %     P: Pick P matches at random from the total set of matches T 
