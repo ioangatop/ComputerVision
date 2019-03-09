@@ -55,7 +55,7 @@ stitched = max(trans_img_padded, left_img_padded);
 end
 
 function [padded_1, padded_2] = calcPadding(img_1, img_2)
-% pad horizontal and vertical with 0s
+% pad horizontal and vertical with 0
 % help padarray (first dimension is vertical, second horizontal)
 pad_1 = [max(size(img_1,1)-size(img_2,1),0) max(size(img_1,2)-size(img_2,2),0)];
 pad_2 = [max(size(img_2,1)-size(img_1,1),0) max(size(img_2,2)-size(img_1,1),0)];

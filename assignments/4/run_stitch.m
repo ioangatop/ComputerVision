@@ -1,4 +1,4 @@
-% plot keypoints is 1
+% plot keypoints is 1 -> shows keypoints
 % done inside RANSAC because otherwise
 % there would be too many parameters passing around through all the functions
 [original, stitched ] = stitch('right.jpg', 'left.jpg', 1);
