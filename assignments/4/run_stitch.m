@@ -1,10 +1,9 @@
 [original, stitched ] = stitch('right.jpg', 'left.jpg');
-figure(1) ; clf ;
-subplot(2,1,1) ;
-title('Original image');
+
+figure(1) ; clf ; 
 imagesc(original) ;
+title('Original images side by side');
 
 figure(1) ; clf ;
-subplot(2,1,1) ;
 imagesc(stitched) ;
-title('Original image');
+title('Stitched image');
