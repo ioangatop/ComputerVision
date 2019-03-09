@@ -14,4 +14,5 @@ J = imread('boat2.pgm');
 % sample = 50;
 % plot_keypoints_subset(I, J, matches, scores, f_I, f_J, d_I, d_J, sample);
 
-[sub_matches, sub_scores] = RANSAC(N, P)
+N = 3; P = 10;
+RANSAC(N, P, I, J)

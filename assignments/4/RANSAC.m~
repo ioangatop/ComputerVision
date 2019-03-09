@@ -1,0 +1,41 @@
+function [] = RANSAC(N, P, I, J)
+%   RANSAC 
+%     N: Repeat N times
+%     P: Pick P matches at random from the total set of matches T 
+
+I_raw = I;
+J_raw = J;
+
+% Get the matching points
+[matches, scores, f_I, f_J, d_I, d_J] = keypoint_matching(I, J);
+
+% We will take a subset P of matches and scores
+% Generate P random numbers - indexes
+[~, columns] = size(scores);
+r = randi([1 columns],1, P);
+
+% Get the subset using this indexes
+sub_matches = zeros(2, P);
+sub_f_I = zeros(2, P);
+sub_f_J = zeros(2, P);
+
+% Get a random match and with sub_f_I and sub_f_J get the coordinates
+% of image I and J of this match
+for i = 1:P
+    sub_matches(:, i) = matches(:, r(i));
+    sub_f_I(:, i) = f_I((1:2), sub_matches(1, i));
+    sub_f_J(:, i) = f_J((1:2), sub_matches(2, i));
+end
+
+x = zeros(6, P);
+% for every point
+for i = 1:P
+    A = [ sub_f_I(1, i), sub_f_I(1, j), 0, 0, 1, 0;
+        0, 0, sub_f_I(1, i), sub_f_I(1, j), 1, 0;];
+    b = [ sub_f_I(1, i); sub_f_I(2, i) ]
+    
+    % pseduo-inverse
+    x(:,i) = pinv(A)*b
+    
+end
+
