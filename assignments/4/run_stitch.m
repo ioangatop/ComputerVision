@@ -1,4 +1,7 @@
-[original, stitched ] = stitch('right.jpg', 'left.jpg');
+% plot keypoints is 1
+% done inside RANSAC because otherwise
+% there would be too many parameters passing around through all the functions
+[original, stitched ] = stitch('right.jpg', 'left.jpg', 1);
 
 figure(1) ; clf ; 
 imagesc(original) ;

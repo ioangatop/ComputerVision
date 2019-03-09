@@ -1,10 +1,17 @@
-function [m, t ] = RANSAC(N, P, I, J)
+function [m, t ] = RANSAC(N, P, I, J, plotKeypoints)
 %   RANSAC 
 %     N: Repeat N times
 %     P: Pick P matches at random from the total set of matches T 
 
 % Get the matching points
 [matches, scores, f_I, f_J, d_I, d_J] = keypoint_matching(I, J);
+if (plotKeypoints == 1)
+    plot_keypoints_subset(I, J, matches, scores, f_I, f_J, d_I, d_J, N)
+    % return unused return values to stop calculations
+    m=0;
+    t=0;
+    return
+end
 
 % We will take a subset P of matches and scores
 % Generate P random numbers - indexes

@@ -1,4 +1,4 @@
-function [original, stitched] = stitch(right_img, left_img)
+function [original, stitched] = stitch(right_img, left_img, plotKeypoints)
 % Command to run vlfeat
 run vlfeat-0.9.21/toolbox/vl_setup
 
@@ -10,14 +10,17 @@ left_img_color = imread(left_img);
 % return original with padding
 [left_img_padded, right_img_padded ] = calcPadding(left_img_color, right_img_color);
 original = [left_img_padded right_img_padded];
-figure()
-imshow(original)
 
 % get matchings
 % keypoint finder INCLUDED IN RANSAC SCRIPT
 % best transformation
 % N = 50, P = 10, 
-[m, t] = RANSAC(50, 10, right_img_color, left_img_color);
+if (plotKeypoints == 1)
+    % use the padded images instead, otherwise there will be an error
+    [~, ~] = RANSAC(50, 10, left_img_padded,right_img_padded, 1);
+end
+% this one returns the best m, t values
+[m, t] = RANSAC(50, 10, right_img_color, left_img_color, 0);
 
 % this may seem counterintuitive, but imread has the y values 
 % in the first position, x values in the second
