@@ -1,100 +1,117 @@
-function [m, t ] = RANSAC(N, P, I, J, plotKeypoints)
+function [best_m, best_t, matches, f_image1, f_image2] = RANSAC(N, P, image1, image2, visualize_connection)
 %   RANSAC 
 %     N: Repeat N times
 %     P: Pick P matches at random from the total set of matches T 
-
-% Get the matching points
-[matches, scores, f_I, f_J, d_I, d_J] = keypoint_matching(I, J);
-if (plotKeypoints == 1)
-    plot_keypoints_subset(I, J, matches, scores, f_I, f_J, d_I, d_J, N)
-    % return unused return values to stop calculations
-    m=0;
-    t=0;
-    return
-end
-
-% We will take a subset P of matches and scores
-% Generate P random numbers - indexes
-[~, columns] = size(scores);
-
-% assume at first count that all matches are outliers
-best_inliners = 0;
-% initialize a best x
-best_x = zeros(6,1);
-
-% Get a random match and with sub_f_I and sub_f_J get the coordinates
-% of image I and J of this match
-% do this N times
-for n = 1:N
-    A = zeros(2*P, 6);
-    b = zeros(2*P, 1);
-    % remember to randomize every loop
-    r = randi([1 columns],1, P);
+    max_inliers_count = -1;
+    best_m = zeros(2, 2);
+    best_t = zeros(2, 1);
     
-    for i = 1:P
-        % Get the indexes
-        sub_match = matches(:, r(i));
+    for i = 1:N
+        % Get the matching points
+        [matches, ~, f_image1, f_image2, ~, ~] = keypoint_matching(image1, image2);
 
-        % Get (x, y) of I of this match point
-        sub_f_I = f_I((1:2), sub_match(1));
-   
-        % Get (x', y') of J of this match point
-        sub_f_J = f_J((1:2), sub_match(2));
+        % We will take a subset P of matches and scores
+        % Generate P random numbers - indexes
+        [~, columns] = size(matches);
+        r = randi([1 columns],1, P);
+
+        % Get the subset using this indexes
+        A = zeros(2*P,2*P);
+        b = zeros(2*P,1);
+
+        % Get a random match and with sub_f_I and sub_f_J get the coordinates
+        % of image I and J of this match
+        for j = 1:P
+
+            % Get the indexes
+            sub_matches = matches(:, r(j));
+
+            % Get (x, y) of I of this match point
+            sub_f_image1 = f_image1((1:2), sub_matches(1));
+
+            % Get (x', y') of J of this match point
+            sub_f_image2 = f_image2((1:2), sub_matches(2));
+
+            % Calculate matrix A and b
+            current_A = [ sub_f_image1(1), sub_f_image1(2), 0, 0, 1, 0;
+                0, 0, sub_f_image1(1), sub_f_image1(2), 1, 0;];
+            
+            current_b = [sub_f_image2(1); sub_f_image2(2) ];
+            
+            A = cat(1, A, current_A);
+            b = cat(1, b, current_b);
+        end
         
-        % Calculate matrix A and b
-        % watch out for 1,0 / 0,1 per equation 3
-        % FILL A & B in descending order       
-        A(2*i-1:2*i,:) = [ sub_f_I(1), sub_f_I(2), 0, 0, 1, 0;
-            0, 0, sub_f_I(1), sub_f_I(2), 0, 1];
-        b(2*i-1:2*i) = [ sub_f_J(1); sub_f_J(2) ];
+        % Solve the equation using pseudo-inverse
+        % where x is the transformation of every point    
+        x = pinv(A) * b;
+
+        % Transform the locations of all T points in image1
+        % Constract m and t matrixs
+        m = [x(1), x(2); x(3), x(4)];
+        t = [x(5); x(6)];
         
-    end
+        % 3) Plot on the figure of the two images
+        if visualize_connection
+            figure; 
+            hold off;
+            imshow(cat(2, image1, image2));
+            hold on;
+        end
         
-    % Solve the equation using pseduo-inverse
-    % where x is the transformation of every point
-    x = pinv(A)*b;
+        current_inliers_count = 0;
+
+        for j=1:length(matches)
+            new_xy = m * f_image1(1:2, matches(1, j)) + t;
+            
+            if visualize_connection
+                random_color = abs(rand(1,3));
+
+                xa = f_image1(1, matches(1, j));
+                xb = new_xy(1) + size(image1, 2);
+                ya = f_image1(2, matches(1, j));
+                yb = new_xy(2);
+
+                l = line([xa ; xb], [ya ; yb]);
+                set(l,'linewidth', 1.5, 'color', random_color);
+            end
+            
+            image2_point = f_image2(1:2, matches(2, j));
+            
+            % check if the distance between the points is 
+            % less than inlier_radius
+            distance_between_points = pdist([new_xy(1) new_xy(2); image2_point(1) image2_point(2)]);
+            if distance_between_points <= 10
+               current_inliers_count = current_inliers_count + 1;
+            end
+        end
         
-    % do test after applying transform for random points
-    current_inliers = 0;
-    % apply transform to each random selected point in r
-    % calculate euclidean distance < 10 => inlier
-    for i = 1:P
-        % pick a random point
-        sub_match = matches(:, r(i));
-        % (x,y)
-        sub_f_I = f_I((1:2), sub_match(1));
-        % this is the transformed pixel
-        sub_f_J = f_J(1:2, sub_match(2));
-        % equation 3
-        resulting_point = [sub_f_I(1), sub_f_I(2), 0, 0, 1, 0; 
-            0, 0, sub_f_I(1), sub_f_I(2), 0, 1];
-       
-        % comparision
-        % norm is euclidean distance (radius circle) 
-        % resulting_point * x is the predicted projection
-        if norm(sub_f_J - (resulting_point * x)) <= 10
-            current_inliers = current_inliers + 1;
+        if max_inliers_count < current_inliers_count
+            % fprintf('found new best!');
+            max_inliers_count = current_inliers_count;
+            best_m = m;
+            best_t = t;
         end
     end
-    % are we having a better score
-    % if yes: then save
-    if current_inliers > best_inliners
-       best_inliners = current_inliers;
-       best_x = x;
-    end
-end
+    
+%% Create transformed image
+        
+    new_image1 = transform_image(image1, best_m, best_t);
+  
+%% Display transformation
 
-% take the avg of all transformations to and approx all of the points 
-% with it
-% final_x = mean(best_x, 2);
-final_x = best_x;
+    figure, subplot(1,3,1), imshow(image1), title('left image');
+    subplot(1,3,2), imshow(new_image1), title('transformed image');
+    subplot(1,3,3), imshow(image2), title('right image');
 
-% Transform the locations of all T points in image1
-% Constract m and t matrixs
-m = [final_x(1), final_x(2); final_x(3), final_x(4)];
-t = [final_x(5); final_x(6)];
+%% Compare with MATLAB built-in function
+    M_inv = best_m .* (- ones(length(best_m)) + 2 * eye(length(best_m)));
+    tf_inv = maketform('affine', [M_inv ; best_t']);
+    t_image_m = imtransform(image1, tf_inv, 'nearest');
 
-
+    % Compare with MATLAB
+    figure, subplot(1,2,1), imshow(new_image1), title('our transformation', 'FontSize', 16)
+    subplot(1,2,2),imshow(t_image_m), title('MATLAB transformation', 'FontSize', 16)
 end
 
 

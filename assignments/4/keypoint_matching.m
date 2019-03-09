@@ -16,15 +16,15 @@ if c ~= 1
 end
 
 % Single
-I = single(I) ;
-J = single(J) ;
+I = single(I);
+J = single(J);
 
 % Find similar regions in two images
-[f_I, d_I] = vl_sift(I) ;
-[f_J, d_J] = vl_sift(J) ;
+[f_I, d_I] = vl_sift(I);
+[f_J, d_J] = vl_sift(J);
 
 % vl_ubcmatch: a basic matching algorithm
-[matches, scores] = vl_ubcmatch(d_I, d_J) ;
+[matches, scores] = vl_ubcmatch(d_I, d_J);
 
 end
 
