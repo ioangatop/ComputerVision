@@ -35,6 +35,7 @@ for x_pixel = 1:size(right_img_color,2)
     end
 end
 
+% this is basically step 2, but we do not use the cornermethod
 % this image might be out of bounds
 % let's pad them to the left img
 [trans_img_padded, left_img_padded ] = calcPadding(img_right_trans, left_img_color);
