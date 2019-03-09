@@ -1,4 +1,4 @@
-function [] = RANSAC(N, P, I, J)
+function [m, t, matches, f_I, f_J] = RANSAC(N, P, I, J)
 %   RANSAC 
 %     N: Repeat N times
 %     P: Pick P matches at random from the total set of matches T 
@@ -27,7 +27,7 @@ for i = 1:P
     % Get (x, y) of I of this match point
     sub_f_I(:, i) = f_I((1:2), sub_matches(1, i));
     
-    % Get (x', y') of I of this match point
+    % Get (x', y') of J of this match point
     sub_f_J(:, i) = f_J((1:2), sub_matches(2, i));
     
     % Calculate matrix A and b
@@ -53,6 +53,8 @@ t = [x(5); x(6)];
 % find the new transformed coordinates
 % sub_f_I (x,y of I) -> new_xy (x, y)
 new_xy = m * sub_f_I + t;
+
+
 end
 
 
