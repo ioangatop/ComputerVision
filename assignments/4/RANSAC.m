@@ -5,10 +5,10 @@ function [best_m, best_t, matches, f_image1, f_image2] = RANSAC(N, P, image1, im
     max_inliers_count = -1;
     best_m = zeros(2, 2);
     best_t = zeros(2, 1);
+    [matches, ~, f_image1, f_image2, ~, ~] = keypoint_matching(image1, image2);
     
     for i = 1:N
         % Get the matching points
-        [matches, ~, f_image1, f_image2, ~, ~] = keypoint_matching(image1, image2);
 
         % We will take a subset P of matches and scores
         % Generate P random numbers - indexes
@@ -100,9 +100,9 @@ function [best_m, best_t, matches, f_image1, f_image2] = RANSAC(N, P, image1, im
   
 %% Display transformation
 
-    figure, subplot(1,3,1), imshow(image1), title('left image');
+    figure, subplot(1,3,1), imshow(image2), title('left image');
     subplot(1,3,2), imshow(new_image1), title('transformed image');
-    subplot(1,3,3), imshow(image2), title('right image');
+    subplot(1,3,3), imshow(image1), title('right image');
 
 %% Compare with MATLAB built-in function
     M_inv = best_m .* (- ones(length(best_m)) + 2 * eye(length(best_m)));

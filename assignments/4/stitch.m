@@ -17,7 +17,7 @@ original = [left_img_padded right_img_padded];
 % N = 50, P = 10, 
 if (plotKeypoints == 1)
     % use the padded images instead, otherwise there will be an error
-    [~, ~] = RANSAC(50, 10, left_img_padded,right_img_padded, 1);
+    [~, ~] = RANSAC(50, 10, left_img_padded,right_img_padded, 0);
 end
 % this one returns the best m, t values
 [m, t] = RANSAC(50, 10, right_img_color, left_img_color, 0);
