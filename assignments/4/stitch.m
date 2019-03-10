@@ -17,30 +17,15 @@ original = [left_img_padded right_img_padded];
 % N = 50, P = 10, 
 if (plotKeypoints == 1)
     % use the padded images instead, otherwise there will be an error
-    [~, ~] = RANSAC(50, 10, left_img_padded,right_img_padded, 0);
+    [~, ~] = RANSAC(50, 10, left_img_padded,right_img_padded, false, false);
 end
 % this one returns the best m, t values
-[m, t] = RANSAC(50, 10, right_img_color, left_img_color, 0);
-
-% this may seem counterintuitive, but imread has the y values 
-% in the first position, x values in the second
-% i.e. the right_image is 255px wide, 333px high
-% the right_img_color matrix = [333, 255, 3]
-% keep this convention in line 33
-for x_pixel = 1:size(right_img_color,2)
-    for y_pixel = 1:size(right_img_color,1)
-        % calculate transformation using nearest neighbor
-        % which is simply rounding coordinates (from hint in 1)
-        transformation = round(m*[x_pixel; y_pixel] +t);
-        if (transformation(1) > 0 && transformation(2) > 0)
-            img_right_trans(transformation(2),transformation(1), :) = right_img_color(y_pixel, x_pixel, :);
-        end
-    end
-end
+[m, t, img_right_trans] = RANSAC(50, 10, right_img_color, left_img_color, false, false);
 
 % this is basically step 2, but we do not use the cornermethod
 % this image might be out of bounds
 % let's pad them to the left img
+
 [trans_img_padded, left_img_padded ] = calcPadding(img_right_trans, left_img_color);
 
 % figure()

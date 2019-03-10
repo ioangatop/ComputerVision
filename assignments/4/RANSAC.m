@@ -1,14 +1,15 @@
-function [best_m, best_t, matches, f_image1, f_image2] = RANSAC(N, P, image1, image2, visualize_connection)
+function [best_M, best_t, new_image1] = RANSAC(N, P, image1, image2, visualize_connection, crop_borders)
 %   RANSAC 
 %     N: Repeat N times
 %     P: Pick P matches at random from the total set of matches T 
     max_inliers_count = -1;
-    best_m = zeros(2, 2);
+    best_M = zeros(2, 2);
     best_t = zeros(2, 1);
+    
+    % Get the matching points
     [matches, ~, f_image1, f_image2, ~, ~] = keypoint_matching(image1, image2);
     
     for i = 1:N
-        % Get the matching points
 
         % We will take a subset P of matches and scores
         % Generate P random numbers - indexes
@@ -19,8 +20,8 @@ function [best_m, best_t, matches, f_image1, f_image2] = RANSAC(N, P, image1, im
         A = zeros(2*P,6);
         b = zeros(2*P,1);
 
-        % Get a random match and with sub_f_I and sub_f_J get the coordinates
-        % of image I and J of this match
+        % Get a random match and with sub_f_image1 and sub_f_image2 
+        % get the coordinates of image1 and image2 of this match
         for j = 1:P
 
             % Get the indexes
@@ -87,31 +88,30 @@ function [best_m, best_t, matches, f_image1, f_image2] = RANSAC(N, P, image1, im
         end
         
         if max_inliers_count < current_inliers_count
-            % fprintf('found new best!');
             max_inliers_count = current_inliers_count;
-            best_m = m;
+            best_M = m;
             best_t = t;
         end
     end
     
 %% Create transformed image
-        
-    new_image1 = transform_image(image1, best_m, best_t);
-  
+
+    new_image1 = transform_image(image1, best_M, best_t, true, crop_borders);
+
 %% Display transformation
 
-    figure, subplot(1,3,1), imshow(image2), title('left image');
+    figure, subplot(1,3,1), imshow(image1), title('left image');
     subplot(1,3,2), imshow(new_image1), title('transformed image');
-    subplot(1,3,3), imshow(image1), title('right image');
+    subplot(1,3,3), imshow(image2), title('right image');
 
 %% Compare with MATLAB built-in function
-    M_inv = best_m .* (- ones(length(best_m)) + 2 * eye(length(best_m)));
-    tf_inv = maketform('affine', [M_inv ; best_t']);
-    t_image_m = imtransform(image1, tf_inv, 'nearest');
+    combined_matrix = cat(1, best_M', best_t');
+    tform = affine2d(combined_matrix);
+    transformed_image_matlab = imwarp(image1, tform);
 
     % Compare with MATLAB
     figure, subplot(1,2,1), imshow(new_image1), title('our transformation', 'FontSize', 16)
-    subplot(1,2,2),imshow(t_image_m), title('MATLAB transformation', 'FontSize', 16)
+    subplot(1,2,2),imshow(transformed_image_matlab), title('MATLAB transformation', 'FontSize', 16)
 end
 
 

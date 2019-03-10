@@ -8,5 +8,5 @@ imagesc(original) ;
 title('Original images side by side');
 
 figure(1) ; clf ;
-imagesc(stitched) ;
+imagesc(stitched);
 title('Stitched image');

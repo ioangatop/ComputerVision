@@ -15,5 +15,7 @@ image2 = imread('boat2.pgm');
 % plot_keypoints_subset(I, J, matches, scores, f_I, f_J, d_I, d_J, sample);
 
 %% RANSAC
-N = 10; P = 3;
-RANSAC(N, P, image1, image2, false);
+N = 10; P = 10;
+RANSAC(N, P, image1, image2, false, true);
+
+RANSAC(N, P, image2, image1, false, true);
