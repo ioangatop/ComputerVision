@@ -16,7 +16,7 @@ function [best_m, best_t, matches, f_image1, f_image2] = RANSAC(N, P, image1, im
         r = randi([1 columns],1, P);
 
         % Get the subset using this indexes
-        A = zeros(2*P,2*P);
+        A = zeros(2*P,6);
         b = zeros(2*P,1);
 
         % Get a random match and with sub_f_I and sub_f_J get the coordinates
@@ -34,7 +34,7 @@ function [best_m, best_t, matches, f_image1, f_image2] = RANSAC(N, P, image1, im
 
             % Calculate matrix A and b
             current_A = [ sub_f_image1(1), sub_f_image1(2), 0, 0, 1, 0;
-                0, 0, sub_f_image1(1), sub_f_image1(2), 1, 0;];
+                0, 0, sub_f_image1(1), sub_f_image1(2), 0, 1;];
             
             current_b = [sub_f_image2(1); sub_f_image2(2) ];
             

@@ -32,7 +32,7 @@ for x_pixel = 1:size(right_img_color,2)
         % calculate transformation using nearest neighbor
         % which is simply rounding coordinates (from hint in 1)
         transformation = round(m*[x_pixel; y_pixel] +t);
-        if (transformation(1) > 0 && transformation(2) > 0) 
+        if (transformation(1) > 0 && transformation(2) > 0)
             img_right_trans(transformation(2),transformation(1), :) = right_img_color(y_pixel, x_pixel, :);
         end
     end
