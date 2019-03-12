@@ -103,3 +103,5 @@ venv.bak/
 # mypy
 .mypy_cache/
 /assignments/Final/stl10_matlab/*
+/assignments/Final/test.mat
+/assignments/Final/train.mat
