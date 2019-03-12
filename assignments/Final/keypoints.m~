@@ -1,0 +1,8 @@
+function [f, d] = keypoints(img);
+%KEYPOINTS Summary of this function goes here
+%   f =
+
+[f, d] = vl_sift(I);
+
+end
+
