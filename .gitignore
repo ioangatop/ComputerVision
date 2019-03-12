@@ -102,3 +102,4 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+/assignments/Final/stl10_matlab/*
