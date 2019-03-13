@@ -5,14 +5,13 @@ run vlfeat-0.9.21/toolbox/vl_setup;
 
 img = imread('peppers.png');
 
-%% Get interest points
-% keypoints
+%% Dense SIFT (e.g. vl dsift) descriptor extraction 
 type = 'RGB';
-[f, d] = get_dense(img, type);
+binSize = 8;
+magnif = 3;
 
-d = get_sift(img, type);
+img_descriptors = get_densely_sampled_regions(img, type, binSize, magnif);
 
-% dense
-% [frames, descrs] = dense_features(img, 'RGB', 'True');
-
-% f = get_sift(img, type, visualize)
+%% Key points SIFT descriptor extraction (e.g. vl sift)
+% type = 'RGB';
+% img_descriptors = get_dense(img, type);
