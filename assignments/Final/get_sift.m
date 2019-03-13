@@ -1,4 +1,4 @@
-function d = get_sift(img, type)
+function [f, d] = get_sift(img, type)
 %KEYPOINTS Summary of this function goes here
 %   f: feature frame. Each column its a feature frame and has the format 
 %   [X, Y, S, TH] where X,Y is the fractional center of the frame, S is
@@ -10,12 +10,14 @@ function d = get_sift(img, type)
 if type == 'RGB'
     img = single(img);
     if channels == 3
-        [~, d1] = vl_sift(img(:,:,1));
-        [~, d2] = vl_sift(img(:,:,2));
-        [~, d3] = vl_sift(img(:,:,3));
+        [f1, d1] = vl_sift(img(:,:,1));
+        [f2, d2] = vl_sift(img(:,:,2));
+        [f3, d3] = vl_sift(img(:,:,3));
         d = cat(2, d1, d2, d3);
+        f = cat(2, f1, f2, f3);
+
     else
-        [~, d] = vl_swift(img);
+        [f, d] = vl_swift(img);
     end
 end
 
