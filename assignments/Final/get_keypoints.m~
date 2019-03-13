@@ -1,35 +1,44 @@
 function descriptors = get_keypoints(img, type)
-%KEYPOINTS Summary of this function goes here
-%   f: feature frame. Each column its a feature frame and has the format 
-%   [X, Y, S, TH] where X,Y is the fractional center of the frame, S is
-%   the scale and TH is the orientation
-%   type: describes the descriptor type 
+%==========================================================================
+%   GET_KEYPOINTS: returns the descriptors of keypoints of a given color
+%   space type.
+%
+%   - Argms:
+%       * type: it get the type of the keypoints ('RGB', 'OPP')
+%
+%   - Procedure:
+%     We first check the channels;
+%        * if the type is 'RGB', it will jump to calculate the descriptors.
+%        * if the type is something else, then it will do the nessesary
+%          modifications to the channel and then calculate the descriptors.
+%        * if the channels are 1, the image considered as greyscale
+%==========================================================================
 
-% sift for RGB
+
 [~, ~, channels] = size(img);
+img = single(img);
 
 if channels == 3
-    img = single(img);
-    if type == 'RGB'
-        [~, descriptor_1] = vl_sift(img(:,:,1));
-        [~, descriptor_2] = vl_sift(img(:,:,2));
-        [~, descriptor_3] = vl_sift(img(:,:,3));
-        descriptors = cat(2, descriptor_1, descriptor_2, descriptor_3);
-    elseif  type == 'OPP'
-        channel_1 = image(:,:,1);
-        channel_2 = image(:,:,2);
-        channel_3 = image(:,:,3);
-        
-        O1 = single((channel_1-channel_2)/sqrt(2));
-        O2 = single((channel_1+channel_2-(2*channel_3))/sqrt(6));
-        O3 = single(((channel_1+channel_2+channel_3)/sqrt(3));
-        
-        [~, descriptor_1] = vl_sift(O1);
-        [~, descriptor_2] = vl_sift(O2);
-        [~, descriptor_3] = vl_sift(O3);
+    
+    if type == 'OPP'
+        channel_1 = img(:,:,1);
+        channel_2 = img(:,:,2);
+        channel_3 = img(:,:,3);
+     
+        img(:,:,1) = single((channel_1-channel_2)/sqrt(2));                % O_1 color
+        img(:,:,2) = single((channel_1+channel_2-(2*channel_3))/sqrt(6));  % O_2 color
+        img(:,:,3) = single(((channel_1+channel_2+channel_3)/sqrt(3)));    % O_3 color
     end
-else % if image is greyscale
+        
+    [~, descriptor_1] = vl_sift(img(:,:,1));
+    [~, descriptor_2] = vl_sift(img(:,:,2));
+    [~, descriptor_3] = vl_sift(img(:,:,3));
+    descriptors = cat(2, descriptor_1, descriptor_2, descriptor_3);
+    
+else 
+    
     [~, descriptors] = vl_sift(img);
+    
 end
 
 end

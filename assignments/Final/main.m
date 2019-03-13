@@ -1,6 +1,6 @@
-% clear; clc;
+clc; clear;
 
-% Command to run vlfeat
+load train.mat
 run vlfeat-0.9.21/toolbox/vl_setup;
 
 %% Dense SIFT descriptor extraction (vl dsift)
@@ -37,8 +37,7 @@ for i = 3:size(X, 1)
     end
 end
 
-
-%% Key-points SIFT descriptor extraction (vl sift)
+%% 
 
 numClusters = 1000;
 descriptors = single(descriptors);
@@ -47,6 +46,6 @@ centers = vl_kmeans(descriptors, numClusters);
 
 img3 = reshape(images(unused_images(1), :, :, :), 96, 96, 3);
 image_descriptors3 = get_densely_sampled_regions(img3, type, binSize, magnif);
-probability_distribution = calculate_probability_distribution(image_descriptors3, centers, type, binSize, magnif);
+pdf = calculate_pdf(image_descriptors3, centers);
 
-histogram(probability_distribution, numClusters);
+histogram(pdf, numClusters);

@@ -1,0 +1,33 @@
+function [pdf] = calculate_pdf(image_descriptors, centers)
+%==========================================================================
+%   CALCULATE_PDF: returns descriptors extracted from  densely sampled
+%   regions.
+%
+%   - Argms:
+%       * image_descriptors:
+%       * centers:
+%
+%   - Procedure:
+%     After we make the appropiate modifications to the image (get the 
+%     greyscale, single and smooth it) we find the frame features with
+%     vl_dsift. This has two hyperparameters; binSize and magnif. 
+%     Then we make the appropiate actions for each color space.
+%     For 3 channel images, we get the descriptors for every channel and 
+%     then stack them next to each other.
+%==========================================================================    
+
+
+
+image_descriptors = single(image_descriptors);
+pdf = [];
+
+for i=1:size(image_descriptors, 2)
+    
+    dist = vl_alldist(image_descriptors(:,i), centers);
+    [~, k] = min(dist);
+    pdf = [pdf , k];
+    
+end
+
+end
+
