@@ -8,8 +8,8 @@ run vlfeat-0.9.21/toolbox/vl_setup;
 images = reshape(X, 5000, 96, 96, 3);
 img = reshape(images(1, :, :, :), 96, 96, 3);
 img2 = reshape(images(2, :, :, :), 96, 96, 3);
-
 img3 = reshape(images(3, :, :, :), 96, 96, 3);
+
 type = 'RGB';
 binSize = 8;
 magnif = 3;
@@ -26,15 +26,7 @@ descriptors = single(descriptors);
 
 centers = vl_kmeans(descriptors, numClusters);
 
-img_descriptors3 = get_densely_sampled_regions(img3, type, binSize, magnif);
-img_descriptors3 = single(img_descriptors3);
+image_descriptors3 = get_densely_sampled_regions(img3, type, binSize, magnif);
+probability_distribution = calculate_probability_distribution(image_descriptors3, centers, type, binSize, magnif);
 
-
-H = [];
-for i=1:size(d3,2)
-    dist = vl_alldist(d3(:,i), centers);
-    [~, k] = min(dist);
-    H = [H , k];
-end
-
-histogram(H, numClusters);
+histogram(probability_distribution, numClusters);
