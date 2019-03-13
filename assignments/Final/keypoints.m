@@ -1,4 +1,4 @@
-function [f] = keypoints(img, visualize)
+function [f, d] = keypoints(img, visualize)
 %KEYPOINTS Summary of this function goes here
 %   f: each column its a feature frame and has the format [X, Y, S, TH]
 %   where X,Y is the fractional center of the frame, S is the scale and
@@ -13,19 +13,23 @@ if c ~= 1
 end
 
 % Single
-img = single(img);
+img = im2single(img);
 
 %% Compute keypoints of image
-f = vl_sift(img);
+% f = vl_sift(img);
+
+binSize = 8 ;
+magnif = 5;
+Is = vl_imsmooth(img, sqrt((binSize/magnif)^2 - .25)) ;
+
+% [f, ~] = vl_dsift(Is, 'size', binSize);
+
+[f, d] = vl_dsift(Is,'Fast' ,'size', binSize, 'Step', 20);
+
 
 %% Visualize of keypoints
 if visualize
     perm = randperm(size(f,2)) ;
-    % --------------------------------------------------
-    % Use sel in order to plot a subset of the keyponits
-    sample = 10;
-    sel = perm(1:sample) ;
-    % --------------------------------------------------
     figure
     imshow(img_raw), hold on , vl_plotframe(f(:,perm)) ;
     set(vl_plotframe(f(:,perm)),'color','r','linewidth',2) ;

@@ -7,7 +7,12 @@ img = imread('peppers.png');
 
 %% Get interest points
 % keypoints
-f = keypoints(img, 'True');
+type = 'RGB';
+[f, d] = get_dense(img, type);
+
+d = get_sift(img, type);
 
 % dense
-% keypoints
+% [frames, descrs] = dense_features(img, 'RGB', 'True');
+
+% f = get_sift(img, type, visualize)
