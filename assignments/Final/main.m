@@ -8,16 +8,9 @@ run vlfeat-0.9.21/toolbox/vl_setup;
 images = reshape(X, 5000, 96, 96, 3);
 [image_descriptors, unused_image_indices] = parse_images(images, y, 5, 100);
 
-%% 
-type = 'RGB';
-binSize = 8;
-magnif = 3;
+%% Cluster images and build visual vocabulary and dictionary
+clusters_amount = 1000;
+centers = vl_kmeans(image_descriptors, clusters_amount);
+pdfs = calculate_pdfs(images([unused_image_indices(1) unused_image_indices(2)], :, :, :), centers, clusters_amount); 
 
-numClusters = 1000;
-centers = vl_kmeans(image_descriptors, numClusters);
-
-img3 = reshape(images(unused_image_indices(1), :, :, :), 96, 96, 3);
-image_descriptors3 = get_densely_sampled_regions(img3, type, binSize, magnif);
-pdf = calculate_pdf(image_descriptors3, centers);
-
-histogram(pdf, numClusters);
+show_histogram(pdfs(1, :), clusters_amount);
