@@ -1,4 +1,4 @@
-function pdfs = calculate_pdfs(images, centers, clusters_amount)
+function pdfs = calculate_pdfs(images, centers)
     type = 'RGB';
     binSize = 8;
     magnif = 3;
