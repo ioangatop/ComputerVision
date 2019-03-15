@@ -21,5 +21,6 @@ function [pdf] = calculate_pdf(image_descriptors, centers)
         [~, k] = min(dist);
         pdf(k) = pdf(k) + 1;
     end
+    pdf = pdf ./ size(image_descriptors, 2);
 end
 
