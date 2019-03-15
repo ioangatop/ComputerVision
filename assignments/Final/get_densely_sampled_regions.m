@@ -1,4 +1,4 @@
-function descriptors = get_densely_sampled_regions(img, type, binSize, magnif)
+function descriptors = get_densely_sampled_regions(img, type, binSize, magnif, Step)
 %==========================================================================
 %   GET_DENSELY_SAMPLED_REGIONS: Dense SIFT descriptor extraction
 %   (vl dsift).
@@ -28,7 +28,7 @@ end
 img_smooth = vl_imsmooth(img, sqrt((binSize/magnif)^2 - .25));
 
 % Find the frame features
-[frame_features, ~] = vl_dsift(img_smooth, 'Fast', 'size', binSize, 'Step', 20);   
+[frame_features, ~] = vl_dsift(img_smooth, 'Fast', 'size', binSize, 'Step', Step);   
 frame_features(3,:) = binSize/magnif;   
 frame_features(4,:) = 0;
 

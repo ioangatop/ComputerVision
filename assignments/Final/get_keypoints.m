@@ -24,9 +24,9 @@ if channels == 3
         channel_2 = img(:,:,2);
         channel_3 = img(:,:,3);
      
-        img(:,:,1) = single((channel_1-channel_2)/sqrt(2));                % O_1 color
-        img(:,:,2) = single((channel_1+channel_2-(2*channel_3))/sqrt(6));  % O_2 color
-        img(:,:,3) = single(((channel_1+channel_2+channel_3)/sqrt(3)));    % O_3 color
+        img(:,:,1) = single( (channel_1 - channel_2) / sqrt(2) );                  % O_1 color
+        img(:,:,2) = single( (channel_1 + channel_2 - (2*channel_3) )/ sqrt(6) );  % O_2 color
+        img(:,:,3) = single( ( (channel_1+channel_2+channel_3) / sqrt(3) ));       % O_3 color
     end
         
     [~, descriptor_1] = vl_sift(img(:,:,1));
