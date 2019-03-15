@@ -16,9 +16,6 @@ function descriptors = get_densely_sampled_regions(img, type, binSize, magnif, S
 %     For 3 channel images, we get the descriptors for every channel and 
 %     then stack them next to each other.
 %==========================================================================
-
-
-
 % turn image into greyscale (if it is not), single and smooth it
 img_raw = im2single(img);
 [~, ~, channels] = size(img);
@@ -26,34 +23,32 @@ if channels ~= 1
     img = im2single(rgb2gray(img));
 end
 img_smooth = vl_imsmooth(img, sqrt((binSize/magnif)^2 - .25));
-
 % Find the frame features
 [frame_features, ~] = vl_dsift(img_smooth, 'Fast', 'size', binSize, 'Step', Step);   
 frame_features(3,:) = binSize/magnif;   
 frame_features(4,:) = 0;
-
-if channels == 3
+if type == 'RGB'
+ 
+    [~ , descriptor_1] = vl_sift(img_raw(:,:,1), 'frames', frame_features);
+    [~ , descriptor_2] = vl_sift(img_raw(:,:,2), 'frames', frame_features);
+    [~ , descriptor_3] = vl_sift(img_raw(:,:,3), 'frames', frame_features);
+    descriptors = cat(2, descriptor_1, descriptor_2, descriptor_3);
     
-    if type == 'OPP'
-        
-        channel_1 = img_raw(:,:,1);
-        channel_2 = img_raw(:,:,2);
-        channel_3 = img_raw(:,:,3);
-     
-        img_raw(:,:,1) = single((channel_1-channel_2)/sqrt(2));                % O_1 color
-        img_raw(:,:,2) = single((channel_1+channel_2-(2*channel_3))/sqrt(6));  % O_2 color
-        img_raw(:,:,3) = single(((channel_1+channel_2+channel_3)/sqrt(3)));    % O_3 color
-        
-    end
+elseif type == 'OPP'
     
+    channel_1 = img_raw(:,:,1);
+    channel_2 = img_raw(:,:,2);
+    channel_3 = img_raw(:,:,3);
+    img_raw(:,:,1) = single((channel_1-channel_2)/sqrt(2));                % O_1 color
+    img_raw(:,:,2) = single((channel_1+channel_2-(2*channel_3))/sqrt(6));  % O_2 color
+    img_raw(:,:,3) = single(((channel_1+channel_2+channel_3)/sqrt(3)));    % O_3 color
     [~ , descriptor_1] = vl_sift(img_raw(:,:,1), 'frames', frame_features);
     [~ , descriptor_2] = vl_sift(img_raw(:,:,2), 'frames', frame_features);
     [~ , descriptor_3] = vl_sift(img_raw(:,:,3), 'frames', frame_features);
     descriptors = cat(2, descriptor_1, descriptor_2, descriptor_3);
         
-else
+elseif type == 'GRAY'
     
-    [~ , descriptors] = vl_sift(img_raw, 'frames', frame_features);
+    [~ , descriptors] = vl_sift(img, 'frames', frame_features);
     
 end
-
