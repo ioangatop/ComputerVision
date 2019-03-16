@@ -18,6 +18,8 @@ binSize = 8;
 magnif = 3;
 step = 20;
 
+exclude_unused_classes = true;
+
 %% Load data used for training
 
 load train.mat
@@ -51,10 +53,19 @@ load test.mat
 test_images = reshape(X, size(X, 1), height, width, channels);
 test_labels = y;
 
+%% Filter out images from other classes
+
+if exclude_unused_classes
+    [filtered_images, filtered_labels] = filter_image_data(test_images, test_labels, [1:5]);
+else
+   filtered_images = test_images;
+   filtered_labels = test_labels;
+end
+
 %% Make predictions for the test PDFs
 
-prediction_matrices = predict_images(test_images, test_labels, models, classes_count, cluster_centers, type, binSize, magnif, step);
+prediction_matrices = predict_images(filtered_images, filtered_labels, models, classes_count, cluster_centers, type, binSize, magnif, step);
 
 %% Visualize the results
 
-visualize_predicted_images(test_images, prediction_matrices, class_names, 50, 10);
+visualize_predicted_images(filtered_images, prediction_matrices, class_names, 50, 10);
