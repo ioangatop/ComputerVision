@@ -33,20 +33,21 @@ exclude_unused_classes = true;
 load train.mat
 images = reshape(X, size(X, 1), height, width, channels);
 
+images = images(1:200, :, :, :);
+y = y(1:50, :);
+clusters_amount = 10;
+
 [image_descriptors, used_image_indices, unused_image_indices] = parse_images(images, y, used_classes, class_size, type, binSize, magnif, step);
 
 %% Cluster images and build visual vocabulary and dictionary
 
+
 cluster_centers = vl_kmeans(image_descriptors, clusters_amount);
+
 pdfs = calculate_pdfs(images, cluster_centers, type, binSize, magnif, step); 
 
+visual_dictionary = create_visual_dictionary(cluster_centers, images(unused_image_indices, :, :, :));
 
-%% Cluster using GMM (BONUS)
-% [means, covariances, priors] = vl_gmm(image_descriptors, clusters_amount);
-% pdfs = calculate_gmm_pdfs(images, means, covariances, priors, type, binSize, magnif, step);
-% histogram = vl_fisher(double(d), means, covariances, priors);
-
-% visual_dictionary = create_visual_dictionary(centers, images(unused_image_indices, :, :, :));
 
 %% Order all used images
 
@@ -83,7 +84,3 @@ prediction_matrices = predict_images(filtered_images, filtered_labels, models, c
 %% Visualize the results
 
 visualize_predicted_images(filtered_images, prediction_matrices, used_classes, class_names, 50, 10);
-
-%% Calculate Mean Average Precision
-
-calculate_mAP(filtered_images, prediction_matrices, filtered_labels, used_classes)
