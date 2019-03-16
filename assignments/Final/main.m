@@ -13,10 +13,12 @@ channels = 3;
 class_size = 500;
 clusters_amount = 1000;
 
-type = 'RGB';
+type = "RGB";                       % "RGB"   "OPP"   "GRAY"
 binSize = 8;
 magnif = 3;
 step = 20;
+feature_type = "dense";             % "dense"   "keypoints"
+visualise_visual_words = "True";   % "True"   "False"
 
 % used classes are:
 % 1 - airplane
@@ -33,13 +35,23 @@ exclude_unused_classes = true;
 load train.mat
 images = reshape(X, size(X, 1), height, width, channels);
 
-[image_descriptors, used_image_indices, unused_image_indices] = parse_images(images, y, used_classes, class_size, type, binSize, magnif, step);
+[image_features, image_descriptors, used_image_indices, unused_image_indices, descriptors2img] = parse_images(images, y, used_classes, class_size, type, binSize, magnif, step, feature_type, visualise_visual_words);
 
 %% Cluster images and build visual vocabulary and dictionary
 
 cluster_centers = vl_kmeans(image_descriptors, clusters_amount);
 pdfs = calculate_pdfs(images, cluster_centers, type, binSize, magnif, step); 
 
+%% Visualise Visual Words
+
+if visualise_visual_words == "True"
+    threshold = 30;             % minimun euclidian distance from the centers
+    res = 5;                    % kxk window around the features
+    sample_per_cluster = 2;     % visual words per cluster
+    total_imgs = 200;            % = original + visual words. So if is equal to 10, it will output 20 imgs
+    
+    visualize_features(images, image_features, image_descriptors, descriptors2img, cluster_centers, threshold, res, sample_per_cluster, total_imgs);
+end
 
 %% Cluster using GMM (BONUS)
 % [means, covariances, priors] = vl_gmm(image_descriptors, clusters_amount);
