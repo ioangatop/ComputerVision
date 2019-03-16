@@ -1,4 +1,4 @@
-function visualize_predicted_images(images, prediction_matrices, labels, visualize_count, columns)
+function visualize_predicted_images(images, prediction_matrices, used_classes, labels, visualize_count, columns)
 %VISUALIZE_PREDICTED_IMAGES Visualizes the predicted images 
 % based on their matrices
     
@@ -9,7 +9,7 @@ function visualize_predicted_images(images, prediction_matrices, labels, visuali
         
         figure;
         imshow(combined_image);
-        title(labels(i));
+        title(labels(used_classes(i)));
     end
 end
 

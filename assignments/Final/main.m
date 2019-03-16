@@ -9,7 +9,7 @@ run vlfeat-0.9.21/toolbox/vl_setup;
 height = 96;
 width = 96;
 channels = 3;
-classes_count = 5;
+% classes_count = 5;
 class_size = 500;
 clusters_amount = 1000;
 
@@ -18,6 +18,14 @@ binSize = 8;
 magnif = 3;
 step = 20;
 
+% used classes are:
+% 1 - airplane
+% 2 - bird
+% 3 - car
+% 7 - horse
+% 9 - ship
+used_classes = [1, 2, 3, 7, 9];
+
 exclude_unused_classes = true;
 
 %% Load data used for training
@@ -25,7 +33,7 @@ exclude_unused_classes = true;
 load train.mat
 images = reshape(X, size(X, 1), height, width, channels);
 
-[image_descriptors, used_image_indices, unused_image_indices] = parse_images(images, y, classes_count, class_size, type, binSize, magnif, step);
+[image_descriptors, used_image_indices, unused_image_indices] = parse_images(images, y, used_classes, class_size, type, binSize, magnif, step);
 
 %% Cluster images and build visual vocabulary and dictionary
 
@@ -36,7 +44,7 @@ pdfs = calculate_pdfs(images, cluster_centers, type, binSize, magnif, step);
 
 %% Order all used images
 
-used_image_indices_per_class = parse_used_image_indices(classes_count, class_size, y);
+used_image_indices_per_class = parse_used_image_indices(used_classes, class_size, y);
 
 %% Load Liblinear library - used for SVM classification
 
@@ -56,7 +64,7 @@ test_labels = y;
 %% Filter out images from other classes
 
 if exclude_unused_classes
-    [filtered_images, filtered_labels] = filter_image_data(test_images, test_labels, [1:5]);
+    [filtered_images, filtered_labels] = filter_image_data(test_images, test_labels, used_classes);
 else
    filtered_images = test_images;
    filtered_labels = test_labels;
@@ -64,8 +72,8 @@ end
 
 %% Make predictions for the test PDFs
 
-prediction_matrices = predict_images(filtered_images, filtered_labels, models, classes_count, cluster_centers, type, binSize, magnif, step);
+prediction_matrices = predict_images(filtered_images, filtered_labels, models, cluster_centers, type, binSize, magnif, step);
 
 %% Visualize the results
 
-visualize_predicted_images(filtered_images, prediction_matrices, class_names, 50, 10);
+visualize_predicted_images(filtered_images, prediction_matrices, used_classes, class_names, 50, 10);

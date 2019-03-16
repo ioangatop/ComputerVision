@@ -1,4 +1,4 @@
-function [image_descriptors, used_image_indices, unused_image_indices] = parse_images(image_set, classes_set, classes_count, class_size, type, binSize, magnif, step)
+function [image_descriptors, used_image_indices, unused_image_indices] = parse_images(image_set, classes_set, used_classes, class_size, type, binSize, magnif, step)
     
 
     img = reshape(image_set(1, :, :, :), 96, 96, 3);
@@ -13,7 +13,7 @@ function [image_descriptors, used_image_indices, unused_image_indices] = parse_i
     used_image_indices = [];
     for i = 3:size(image_set, 1)
         current_class = classes_set(i);
-        if current_class > classes_count
+        if ~any(used_classes == current_class)
             continue
             
         elseif class_count(current_class) < class_size
