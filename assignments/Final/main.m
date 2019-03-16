@@ -18,7 +18,7 @@ binSize = 8;
 magnif = 3;
 step = 20;
 feature_type = "dense";             % "dense"   "keypoints"
-visualise_visual_words = "True";   % "True"   "False"
+visualise_visual_words = "False";    % "True"   "False"
 
 % used classes are:
 % 1 - airplane
