@@ -77,3 +77,7 @@ prediction_matrices = predict_images(filtered_images, filtered_labels, models, c
 %% Visualize the results
 
 visualize_predicted_images(filtered_images, prediction_matrices, used_classes, class_names, 50, 10);
+
+%% Calculate Mean Average Precision
+
+calculate_mAP(filtered_images, prediction_matrices, filtered_labels, used_classes)
