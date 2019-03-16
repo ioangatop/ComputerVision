@@ -37,14 +37,13 @@ images = reshape(X, size(X, 1), height, width, channels);
 
 %% Cluster images and build visual vocabulary and dictionary
 
-cluster_centers = vl_kmeans(image_descriptors, clusters_amount);
-pdfs = calculate_pdfs(images, cluster_centers, type, binSize, magnif, step); 
+% cluster_centers = vl_kmeans(image_descriptors, clusters_amount);
+% pdfs = calculate_pdfs(images, cluster_centers, type, binSize, magnif, step); 
 
 
 %% Cluster using GMM (BONUS)
-% [means, covariances, priors] = vl_gmm(image_descriptors, clusters_amount);
-% pdfs = calculate_gmm_pdfs(images, means, covariances, priors, type, binSize, magnif, step);
-% histogram = vl_fisher(double(d), means, covariances, priors);
+[means, covariances, priors] = vl_gmm(image_descriptors, clusters_amount);
+pdfs = calculate_pdfs_gmm(images, means, covariances, priors, type, binSize, magnif, step);
 
 % visual_dictionary = create_visual_dictionary(centers, images(unused_image_indices, :, :, :));
 
