@@ -86,13 +86,14 @@ end
 
 prediction_matrices = predict_images(filtered_images, filtered_labels, models, cluster_centers, type, binSize, magnif, step);
 
-
-%% Show confusion matrix
+prediction_matrices(1:10, :)
 
 [~, preds] = max(prediction_matrices,[],2);
-labels_preds = used_classes(preds(:));
-C = confusionmat(filtered_labels, labels_preds);
-confusionchart(C);
+preds(1:10)
+filtered_labels(1:10)
+
+C = confusionmat(filtered_labels, preds);
+confusionchart(C)
 
 
 %% Visualize the results
