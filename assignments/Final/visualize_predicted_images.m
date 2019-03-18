@@ -17,7 +17,7 @@ function visualize_predicted_images(images, prediction_matrices, used_classes, l
     combined_final = combine_images(combined_image, 10);
     
     file_name = sprintf('images/k_%d_f_%s_t_%s.jpg',clusters_amount, feature_type, type);
-    imwrite(combined_final, file_name, 'jpg')
-    
+    imwrite(combined_final, file_name, 'jpg');
+    imshow(combined_final)
 end
 

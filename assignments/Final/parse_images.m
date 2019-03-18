@@ -18,8 +18,8 @@ function [image_features, image_descriptors, used_image_indices, unused_image_in
     image_features = cat(2, img_features1, img_features2);
     
     if visualise_visual_words == "True"
-        [~, w1] = size(img_descriptors1);
-        [~, w2] = size(img_descriptors2);
+        w1 = size(img_descriptors1, 2);
+        w2 = size(img_descriptors2, 2);
         idx_1 = single(ones(1, w1));
         idx_2 = single(2*ones(1, w2));
 

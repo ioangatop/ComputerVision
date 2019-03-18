@@ -9,13 +9,13 @@ run vlfeat-0.9.21/toolbox/vl_setup;
 height = 96;
 width = 96;
 channels = 3;
-class_size = 100;
+class_size = 500;
 binSize = 8;
 magnif = 3;
 step = 20;
 visualise_visual_words = "False";    % "True"   "False"
 show_confusion_matrix = "False";
-exclude_unused_classes = true;
+exclude_unused_classes = false;
 
 % hyperparams
 clusters_amount = [400, 1000, 4000];
@@ -34,6 +34,7 @@ used_classes = [1, 2, 3, 7, 9];
 
 load train.mat
 images = reshape(X, size(X, 1), height, width, channels);
+train_labels = y;
 
 %% Load the data that we are going to use for testing
 load test.mat
@@ -60,7 +61,7 @@ for K=clusters_amount
 for F=feature_type
            
 %% SIFT images, and get features
-[image_features, image_descriptors, used_image_indices, unused_image_indices, descriptors2img] = parse_images(images, y, used_classes, class_size, T, binSize, magnif, step, F, visualise_visual_words);
+[image_features, image_descriptors, used_image_indices, unused_image_indices, descriptors2img] = parse_images(images, train_labels, used_classes, class_size, T, binSize, magnif, step, F, visualise_visual_words);
 
 %% Cluster images and build visual vocabulary and dictionary
 
@@ -80,7 +81,7 @@ end
 
 %% Order all used images
 
-used_image_indices_per_class = parse_used_image_indices(used_classes, class_size, y);
+used_image_indices_per_class = parse_used_image_indices(used_classes, class_size, train_labels);
 
 %% Train the SVM models
 
@@ -92,10 +93,10 @@ prediction_matrices = predict_images(filtered_images, filtered_labels, models, c
 
 %% Show confusion matrix
 if show_confusion_matrix== "True"
-[~, preds] = max(prediction_matrices,[],2);
-labels_preds = used_classes(preds(:));
-C = confusionmat(filtered_labels, labels_preds);
-confusionchart(C);
+    [~, preds] = max(prediction_matrices,[],2);
+    labels_preds = used_classes(preds(:));
+    C = confusionmat(filtered_labels, labels_preds);
+    confusionchart(C);
 end
 
 %% Visualize the results
@@ -107,7 +108,7 @@ mAP = calculate_mAP(filtered_images, prediction_matrices, filtered_labels, used_
 
 % save to dict
 exp_name = sprintf('k_%d_f_%s_t_%s',K, F, T);
-scores(exp_name) = mAP
+scores(exp_name) = mAP;
 save(exp_name, 'mAP');
 
 end 
