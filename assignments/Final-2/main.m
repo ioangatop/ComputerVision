@@ -6,7 +6,7 @@ model_folder = 'data/cnn_assignment-lenet';
 if exist(model_folder, 'dir')
     files = dir(model_folder);
     for k = 1:length(files)
-        delete([ model_folder  '\' files(k).name])
+        delete([ model_folder  '/' files(k).name])
     end
     
     rmdir data/cnn_assignment-lenet
