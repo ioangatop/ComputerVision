@@ -42,5 +42,7 @@ function [data, labels, sets] = create_imdb_data()
             counter = counter + 1;
         end        
     end
+    
+    data = single(data);
 end
 
