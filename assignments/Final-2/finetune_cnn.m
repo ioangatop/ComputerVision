@@ -78,13 +78,18 @@ end
 % -------------------------------------------------------------------------
 function imdb = getIMDB()
 % -------------------------------------------------------------------------
-% Preapre the imdb structure, returns image data with mean image subtracted
+% Prepare the imdb structure, returns image data with mean image subtracted
 classes = {'airplanes', 'birds', 'ships', 'horses', 'cars'};
 splits = {'train', 'test'};
 
 %% TODO: Implement your loop here, to create the data structure described in the assignment
 %% Use train.mat and test.mat we provided from STL-10 to fill in necessary data members for training below
-%% You will need to, in a loop function,  1) read the image, 2) resize the image to (32,32,3), 3) read the label of that image
+%% You will need to, in a loop function,  
+%%   1) read the image;
+%%   2) resize the image to (32,32,3);
+%%   3) read the label of that image;
+
+[data, labels, sets] = create_imdb_data();
 
 %%
 % subtract mean
