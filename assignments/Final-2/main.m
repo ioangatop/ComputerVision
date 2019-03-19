@@ -1,7 +1,7 @@
 %% main function 
 
 clc; clear;
-
+addpath data
 model_folder = 'data/cnn_assignment-lenet';
 if exist(model_folder, 'dir')
     files = dir(model_folder);
