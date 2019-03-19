@@ -3,8 +3,8 @@ function [data, labels, sets] = create_imdb_data()
 %   data - 4D matrix (image height, image width, num channels, num images)
 %   labels - indicates the class to which each image belongs to
 %   sets - indicates whether the image is from the training or test set
-    height = 96
-    width = 96
+    height = 96;
+    width = 96;
     channels = 3;
 
     load train.mat
@@ -25,7 +25,7 @@ function [data, labels, sets] = create_imdb_data()
     counter = 1;
     for i = 1:size(train_images, 1)
         if any(classes == train_labels(i))
-            resized_image = resize_image(train_images(:, :, :, i));
+            resized_image = resize_image(reshape(train_images(i, :, :, :), height, width, channels));
             data(:, :, :, counter) = resized_image;
             labels(:, counter) = convert_label(train_labels(i));
             sets(:, counter) = 1;
@@ -35,7 +35,7 @@ function [data, labels, sets] = create_imdb_data()
     
     for i = 1:size(test_images, 1)
         if any(classes == test_labels(i))
-            resized_image = resize_image(test_images(:, :, :, i));
+            resized_image = resize_image(reshape(test_images(i, :, :, :), height, width, channels));
             data(:, :, :, counter) = resized_image;
             labels(:, counter) = convert_label(test_labels(i));
             sets(:, counter) = 2;
