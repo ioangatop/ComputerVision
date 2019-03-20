@@ -12,13 +12,13 @@ lr = lr_prev_layers ;
 
 % Meta parameters
 net.meta.inputSize = [32 32 3] ;
-net.meta.trainOpts.learningRate = [ 0.05*ones(1,20) ...
-                                    0.005*ones(1,20)...
+net.meta.trainOpts.learningRate = [ 0.0001*ones(1,20) ...
+                                    0.0002*ones(1,20)...
                                     0.0005*ones(1,10)...
                                     ] ;
 net.meta.trainOpts.weightDecay = 0.0001 ;
 net.meta.trainOpts.batchSize = 100 ;
-net.meta.trainOpts.numEpochs = numel(net.meta.trainOpts.learningRate) ;
+net.meta.trainOpts.numEpochs = 1; % 40 should be sufficient
 
 %% Define network 
 net.layers = {} ;
@@ -91,6 +91,7 @@ net = vl_simplenn_tidy(net) ;
 
 oldnet = load('./data/pre_trained_model.mat'); oldnet = oldnet.net;
 net = update_weights(oldnet, net);
+
 end
 
 %% Assign previous weights to the network
