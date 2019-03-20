@@ -21,9 +21,8 @@ end
 
 % TODO: Replace the name with the name of your fine-tuned model
 % IMPORTANT:
-% first run: imdb-stl.mat to create net-epoch-X files, then change to
-% net-epoch-1.mat to finalize svm predcs
-nets.fine_tuned = load(fullfile(expdir, 'imdb-stl.mat')); 
+% change to net-epoch-X.mat where X is the number of epochs
+nets.fine_tuned = load(fullfile(expdir, 'net-epoch-1.mat')); 
 nets.fine_tuned = nets.fine_tuned.net;
 nets.pre_trained = load(fullfile('data', 'pre_trained_model.mat')); 
 if isfield(nets.pre_trained, 'net')
