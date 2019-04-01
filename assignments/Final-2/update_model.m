@@ -17,8 +17,8 @@ net.meta.trainOpts.learningRate = [ 0.0001*ones(1,20) ...
                                     0.0005*ones(1,10)...
                                     ] ;
 net.meta.trainOpts.weightDecay = 0.0001 ;
-net.meta.trainOpts.batchSize = 100 ;
-net.meta.trainOpts.numEpochs = 40; % 40 should be sufficient
+net.meta.trainOpts.batchSize = 50;
+net.meta.trainOpts.numEpochs = 120; % 40 should be sufficient
 
 %% Define network 
 net.layers = {} ;
