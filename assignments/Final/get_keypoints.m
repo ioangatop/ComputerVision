@@ -12,7 +12,7 @@ function [features, descriptors] = get_keypoints(img, type)
 %          modifications to the channel and then calculate the descriptors.
 %        * if the channels are 1, the image considered as greyscale
 %==========================================================================
-img_raw = img
+img_raw = img;
 [~, ~, channels] = size(img);
 img = single(img);
 if type == "RGB" && channels==3

@@ -104,7 +104,7 @@ end
 visualize_predicted_images(filtered_images, prediction_matrices, used_classes, class_names, 5, 2, K, F, T);
 
 %% Calculate Mean Average Precision
-mAP = calculate_mAP(filtered_images, prediction_matrices, filtered_labels, used_classes);
+mAP = calculate_mAP_and_precision(filtered_images, prediction_matrices, filtered_labels, used_classes);
 
 % save to dict
 exp_name = sprintf('k_%d_f_%s_t_%s',K, F, T);

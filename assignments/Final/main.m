@@ -99,6 +99,6 @@ confusionchart(C);
 % last three params are for visualization
 visualize_predicted_images(filtered_images, prediction_matrices, used_classes, class_names, 5, 2, clusters_amount, feature_type, type);
 
-%% Calculate Mean Average Precision
+%% Calculate Mean Average Precision and Accuracy
 
-calculate_mAP(filtered_images, prediction_matrices, filtered_labels, used_classes)
+calculate_mAP_and_precision(filtered_images, prediction_matrices, filtered_labels, used_classes);
