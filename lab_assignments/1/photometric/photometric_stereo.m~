@@ -1,0 +1,81 @@
+close all
+clear all
+clc
+ 
+disp('Part 1: Photometric Stereo')
+
+% obtain many images in a fixed view under different illumination
+disp('Loading images...')
+image_dir = './photometrics_images/SphereColor/'; 
+
+h = 512;
+w = 512;
+albedo_array = zeros(h, w, 3);
+normal_array = zeros(h, w, 3, 3);
+for i = 1:3
+    [image_stack, scriptV] = load_syn_images(image_dir, i);
+    [h, w, n] = size(image_stack);
+    fprintf('Finish loading %d images.\n\n', n);
+
+    % compute the surface gradient from the stack of imgs and light source mat
+    disp('Computing surface albedo and normal map...')
+    image_stack(isnan(image_stack)) = 0;
+    [albedo_temp, normal_temp] = estimate_alb_nrm(image_stack, scriptV, false);
+%    size(albedo_temp);
+    normal_array(:,:,:,i) = normal_temp;
+    albedo_array(:,:,i) = albedo_temp;
+    % [albedo, normals] = estimate_alb_nrm(image_stack, scriptV, false);
+end
+
+albedo = cat(3, albedo_array(:,:,1), albedo_array(:,:,2), albedo_array(:,:,3));
+normals = (normal_array(:,:,:,1) + normal_array(:,:,:,2) + normal_array(:,:,:,3))/3;
+
+%% integrability check: is (dp / dy  -  dq / dx) ^ 2 small everywhere?
+disp('Integrability checking')
+[p, q, SE] = check_integrability(normals);
+
+threshold = 0.005;
+SE(SE <= threshold) = NaN; % for good visualization
+fprintf('Number of outliers: %d\n\n', sum(sum(SE > threshold)));
+
+%% compute the surface height
+height_map_col = construct_surface( p, q );
+height_map_row = construct_surface( p, q, 'row');
+height_map_avg = construct_surface( p, q, 'average');
+
+%% Display
+show_results(albedo, normals, SE);
+
+%% show the height maps - 1.3 plots
+show_height_maps(height_map_col, height_map_row, height_map_avg);
+
+
+%% Face
+
+% this is the provided one
+% [image_stack, scriptV] = load_face_images('./photometrics_images/yaleB02/');
+% load face images for exercise 1.4 with azimuth correciton
+[image_stack, scriptV] = load_face_images_azimuth_correction('./photometrics_images/yaleB02/');
+
+[h, w, n] = size(image_stack);
+fprintf('Finish loading %d images.\n\n', n);
+disp('Computing surface albedo and normal map...')
+[albedo, normals] = estimate_alb_nrm(image_stack, scriptV, false);
+
+%% integrability check: is (dp / dy  -  dq / dx) ^ 2 small everywhere?
+disp('Integrability checking')
+[p, q, SE] = check_integrability(normals);
+
+threshold = 0.005;
+SE(SE <= threshold) = NaN; % for good visualization
+fprintf('Number of outliers: %d\n\n', sum(sum(SE > threshold)));
+
+%% compute the surface height
+height_map_col = construct_surface( p, q, 'column' );
+height_map_row = construct_surface(p,q, 'row');
+height_map_avg = construct_surface(p,q, 'average');
+
+show_results(albedo, normals, SE);
+show_model(albedo, height_map_col);
+show_model(albedo, height_map_row);
+show_model(albedo, height_map_avg);
